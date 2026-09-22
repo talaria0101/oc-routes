@@ -1,4 +1,4 @@
-# routes inventory (20260922T103143Z)
+# routes inventory (20260922T104546Z)
 
 - S1 live openapi: 136 method+path rows from https://opencode.ai/v2/openapi.json
 - S2 src groups: 188 endpoint rows from 39 group files under /workspace/opencode-src

@@ -4,6 +4,8 @@
 # ignores SIGTERM while polling, so the KILL grace matters), stdin is
 # /dev/null, and interactive-only flows are driven with short timeouts purely
 # to capture their first network touch, never to complete them.
+# Gentle by design: local reads plus a handful of live fetches, no auth,
+# no retries. Quota instruments stop at the wall.
 #
 #   ./harness/mitm/drive.sh [outdir]   # default: captures/
 #
@@ -30,7 +32,8 @@ export LD_PRELOAD="$TAP"
 export OPENCODE_DISABLE_AUTOUPDATE=1
 
 MANIFEST="$PWD/$OUT/manifest.json"
-printf '{"cli": "%s", "runs": [' "$BIN" > "$MANIFEST"
+MANIFEST_TMP="$MANIFEST.tmp"
+printf '{"cli": "%s", "runs": [' "$BIN" > "$MANIFEST_TMP"
 FIRST_RUN=1
 run() { # run <tag> <secs> <cmd...>
   local tag=$1 secs=$2; shift 2
@@ -45,9 +48,9 @@ run() { # run <tag> <secs> <cmd...>
   t1=$(date +%s)
   ev=$(wc -l < "$OC_ROUTES_NETLOG" 2>/dev/null || echo 0)
   echo "exit=$code net=${ev}L"
-  if [ "$FIRST_RUN" = 1 ]; then FIRST_RUN=0; else printf ',' >> "$MANIFEST"; fi
+  if [ "$FIRST_RUN" = 1 ]; then FIRST_RUN=0; else printf ',' >> "$MANIFEST_TMP"; fi
   printf '{"name": "%s", "rc": %s, "seconds": %s, "events": %s}' \
-    "$tag" "$code" "$((t1 - t0))" "$ev" >> "$MANIFEST"
+    "$tag" "$code" "$((t1 - t0))" "$ev" >> "$MANIFEST_TMP"
 }
 
 run models-cached 60 "$BIN" models
@@ -60,7 +63,19 @@ run console-login 30 "$BIN" console login
 run auth-login 25 "$BIN" auth login --provider opencode
 run serve 15 "$BIN" serve --port 18789
 
-printf ']}\n' >> "$MANIFEST"
+printf ']}\n' >> "$MANIFEST_TMP"
+mv "$MANIFEST_TMP" "$MANIFEST"  # atomic: a killed drive never leaves half a manifest
 echo "manifest: $MANIFEST"
+
+# Scrub single-use device-flow codes from committed tails (expired, but
+# never commit secrets-adjacent strings verbatim).
+for f in "$OUT"/out-*.txt "$OUT"/err-*.txt "$MANIFEST"; do
+  [ -f "$f" ] || continue
+  sed -i -E -e 's/user_code=[A-Z0-9-]+/user_code=***/g' \
+    -e 's/Enter code: [A-Z0-9-]+/Enter code: ***/g' \
+    -e 's/device_code[\"'"'"']?\s*[:=]\s*[\"'"'"']?[0-9a-fA-F-]{8,}/device_code=***/g' "$f"
+done
+echo "scrubbed device codes in $OUT"
+
 python3 harness/mitm/analyze.py --caps "$OUT"
-echo "done. curated: $OUT/endpoints.json $OUT/REPORT.md $OUT/REPORT.txt $OUT/NEW_ENDPOINTS.md"
+echo "done. curated: $OUT/endpoints.json $OUT/tap-hosts.json $OUT/REPORT.md $OUT/REPORT.txt $OUT/NEW_ENDPOINTS.md"

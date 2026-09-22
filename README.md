@@ -47,19 +47,29 @@ Src checkout used for this pass: `anomalyco/opencode @ fe3f3a4` (dev,
 
 ```bash
 ./run.sh                          # full refresh (needs network)
+./run.sh --offline                # rebuild specs from snapshots only
 ./run.sh --report-only            # re-render all MD/TXT twins offline
 ./run.sh --src /path/to/opencode  # pin a checkout for S2/S3
+./run.sh --force                  # override validation refusals (records WARNING)
 python3 harness/discover.py --report-only     # routes twins only
 python3 harness/build_spec.py --report-only   # spec twins only
-python3 harness/mitm/analyze.py --caps captures  # captures curation
+python3 harness/mitm/analyze.py --report-only --caps captures  # captures twins
 ```
 
-Stdlib only (python3, no pip deps). `curl` not required.
+Stdlib only (python3, no pip deps). `curl` not required. Gentle by
+ design: sequential requests, short timeouts, no auth (except `Bearer
+ public` comparisons), no retries. Quota instruments stop at the wall.
 
-Guards: every fetch is validated (HTTP 200, min bytes, JSON shape, sane
-counts) and every JSON write is atomic (tmp + fsync + rename). A failed
-run aborts BEFORE writing, keeping the last good outputs; rerun later.
-Large `models-api`/`catalog` snapshots are gitignored and refetched live.
+Guards (good data is never overwritten with bad data): every fetch is
+ validated (HTTP 200, min bytes, JSON shape, sane counts) and every JSON
+ write is atomic (tmp + rename) with the prior kept as `.prev.json`
+ (local, gitignored). Validation gates refuse the overwrite with exit 2:
+ spec needs non-empty models plus no 50pc count collapse vs prior plus
+ model-listing present; inventory needs non-empty merged plus no 50pc
+ collapse; captures need runs plus events plus endpoints plus tap files.
+ `--force` overrides and logs WARNING. Missing/corrupt snapshots or specs
+ exit 2 with a clean message, never a traceback. Large `models-api` /
+ `catalog` snapshots are gitignored and refetched live.
 
 ## What the harness does
 
@@ -147,8 +157,10 @@ Raw evidence in `captures/` (net-*.log host taps, fetch-*.jsonl exact URLs).
 - `spec/routes.json` + `routes-REPORT.md`/`.txt` - merged inventory twins
 - `spec/opencode-models.json` + `REPORT.md`/`.txt` - per-model table twins
 - `spec/spec.md` - long-form answers to the five questions
-- `captures/endpoints.json` + `REPORT.md`/`.txt` + `NEW_ENDPOINTS.md` -
-  curated CLI-drive evidence (raw taps stay beside them)
+- `captures/endpoints.json` + `tap-hosts.json` + `REPORT.md`/`.txt` +
+  `NEW_ENDPOINTS.md` - curated CLI-drive evidence (tap allowlist verdict
+  and hook blind spots included; committed device codes scrubbed to ***).
+  Raw taps stay beside them; exit 0 clean, 1 unknown hosts, 2 refusal.
 - `harness/guards.py` - fetch validators + atomic writes (no bad overwrites)
 - `harness/report_lib.py` - shared MD/TXT renderers (offline re-render)
 - `snapshots/` - small raw fetches (openapi, zen listings, probes). Large

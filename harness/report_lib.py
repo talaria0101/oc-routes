@@ -150,9 +150,22 @@ def render_caps_md(rep: dict) -> str:
     L += ["## New surface (not in static tables)", ""]
     if rep.get("new_surface"):
         for n in rep["new_surface"]:
-            L.append(f"- `{n['endpoint']}` (hits {n['hits']}, statuses {n['statuses']}, runs: {', '.join(n['runs'])})")
+            L.append(f"- `{n['endpoint']}` (hits {n['hits']}, statuses {n['statuses']}, runs: {', '.join(n.get('seen_in', n.get('runs', [])))})")
     else:
         L.append("none: every captured endpoint matches the modeled surface")
+    tap = rep.get("tap_summary", [])
+    if tap:
+        L += ["", "## Tap host allowlist verdict", ""]
+        for t in tap:
+            mark = "ok" if t.get("known") else "UNKNOWN"
+            L.append(f"- [{mark}] `{t['host']}` hits={t['hits']} "
+                     f"via {','.join(t.get('evidence', []))}")
+        unknown = rep.get("unknown", rep.get("new_hosts", []))
+        if unknown:
+            L += ["", "Verdict: FAIL - unknown hosts need a reason "
+                   "before they join the allowlist."]
+        else:
+            L += ["", "Verdict: PASS - no unknown hosts."]
     L += ["", "## Limits", "",
           "- No TCP bind in the sandbox: capture is in-process "
           "(LD_PRELOAD dns/connect/SNI tap + fetch hook), same host visibility as a TLS proxy.",
@@ -178,6 +191,16 @@ def render_caps_txt(rep: dict) -> str:
         L += ["NEW SURFACE"] + [f"  {n['endpoint']}" for n in rep["new_surface"]] + [""]
     else:
         L += ["NEW SURFACE: none", ""]
+    tap = rep.get("tap_summary", [])
+    if tap:
+        L += ["TAP HOSTS"]
+        for t in tap:
+            mark = "ok" if t.get("known") else "UNKNOWN"
+            L.append(f"  [{mark}] {t['host']:30} hits={t['hits']} "
+                     f"{','.join(t.get('evidence', []))}")
+        unknown = rep.get("unknown", rep.get("new_hosts", []))
+        L.append("  verdict: " + ("FAIL - unknown hosts" if unknown else "PASS"))
+        L += [""]
     return "\n".join(L)
 
 

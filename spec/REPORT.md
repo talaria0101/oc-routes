@@ -1,4 +1,4 @@
-# opencode routes spec (20260922T103236Z (UTC))
+# opencode routes spec (20260922T104554Z (UTC))
 
 ## Counts
 

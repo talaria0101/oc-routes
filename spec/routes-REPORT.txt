@@ -1,4 +1,4 @@
-ROUTES INVENTORY (20260922T103143Z)
+ROUTES INVENTORY (20260922T104546Z)
 ============================================================
 
 - S1 live openapi: 136 method+path rows from https://opencode.ai/v2/openapi.json

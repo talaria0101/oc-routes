@@ -126,6 +126,42 @@ def parse_docs_pricing(lines: list[str]) -> dict:
     return out
 
 
+def validate_spec(spec: dict, prior: dict | None, expect_probes: bool):
+    """Returns (errors, warnings). Errors refuse the write (no --force)."""
+    errors, warnings = [], []
+    n_cat = spec.get("counts", {}).get("catalog_opencode_models", 0)
+    n_live = spec.get("counts", {}).get("live_zen", 0)
+    n_models = len(spec.get("models", []))
+    if n_cat == 0:
+        errors.append("zero catalog opencode models (catalog fetch/parse broke?)")
+    if n_live == 0:
+        errors.append("zero live zen models (listing fetch/parse broke?)")
+    if n_models == 0:
+        errors.append("zero spec model rows (table build broke?)")
+    if not spec.get("free_models_live"):
+        warnings.append("no live free models this run (all paid or parse drift?)")
+    if expect_probes and not spec.get("auth_probes"):
+        errors.append("empty auth-probe table (probes all failed?)")
+    if prior:
+        pc = prior.get("counts", {}).get("catalog_opencode_models", 0) or 0
+        pl = prior.get("counts", {}).get("live_zen", 0) or 0
+        if pc and n_cat < max(10, pc // 2):
+            errors.append(f"catalog models collapsed {pc} -> {n_cat} (truncated fetch?)")
+        elif pc and n_cat < pc:
+            warnings.append(f"catalog models shrank {pc} -> {n_cat}")
+        if pl and n_live < max(10, pl // 2):
+            errors.append(f"live zen collapsed {pl} -> {n_live} (listing drift or outage?)")
+        elif pl and n_live < pl:
+            warnings.append(f"live zen shrank {pl} -> {n_live}")
+        pf = len(prior.get("free_models_live", []))
+        nf = len(spec.get("free_models_live", []))
+        if pf and nf == 0:
+            errors.append(f"free models went {pf} -> 0 (free-lane parse broke?)")
+        elif nf < pf:
+            warnings.append(f"free models shrank {pf} -> {nf} (lane change? check)")
+    return errors, warnings
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--snapshots", default=None)
@@ -133,6 +169,8 @@ def main():
     ap.add_argument("--no-network", action="store_true")
     ap.add_argument("--report-only", action="store_true",
                     help="render REPORT.md/TXT from existing spec JSON; no network")
+    ap.add_argument("--force", action="store_true",
+                    help="write outputs even when validation gates fail")
     args = ap.parse_args()
 
     repo = os.path.dirname(HERE)
@@ -143,7 +181,14 @@ def main():
     spec_path = os.path.join(out_dir, "opencode-models.json")
 
     if args.report_only:
-        spec = load_json(spec_path)
+        try:
+            spec = load_json(spec_path)
+        except FileNotFoundError:
+            print(f"no spec at {spec_path}; run a live pass first")
+            sys.exit(2)
+        except json.JSONDecodeError as e:
+            print(f"spec corrupt: {e}; refusing")
+            sys.exit(2)
         atomic_write_text(os.path.join(out_dir, "REPORT.md"), render_spec_md(spec))
         atomic_write_text(os.path.join(out_dir, "REPORT.txt"), render_spec_txt(spec))
         print(f"reports re-rendered from {spec_path} (no network)")
@@ -152,6 +197,7 @@ def main():
     stamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     use_network = not args.no_network
     docs_note = ""
+    probes_offline: dict = {}
 
     try:
         if use_network:
@@ -194,7 +240,10 @@ def main():
             cands = sorted(glob.glob(os.path.join(snap_dir, "models-api-*.json")))
             if not cands:
                 raise GuardError("offline but no models-api snapshot found")
-            catalog = load_json(cands[-1])
+            try:
+                catalog = load_json(cands[-1])
+            except json.JSONDecodeError as e:
+                raise GuardError(f"snapshot corrupt: {e}; refetch live")
             validate(isinstance(catalog, dict) and len(catalog) >= MIN_PROVIDERS,
                      "offline snapshot catalog too thin; refetch live")
             cands = sorted(glob.glob(os.path.join(snap_dir, "zen-models-*.json")))
@@ -205,6 +254,25 @@ def main():
             docs_lines = strip_lines(open(cands[-1], encoding="utf-8", errors="replace").read()) if cands else []
             docs_endpoints = parse_docs_model_table(docs_lines)
             docs_pricing = parse_docs_pricing(docs_lines)
+            # Offline probes: reuse the latest probe snapshot so an offline
+            # rebuild never wipes the live auth table with {} (good data
+            # overwritten by empty = the bug this guard exists for).
+            probe_cands = sorted(glob.glob(os.path.join(snap_dir, "spec-probes-*.json")))
+            offline_probes: dict = {}
+            if probe_cands:
+                try:
+                    offline_probes = load_json(probe_cands[-1])
+                except json.JSONDecodeError as e:
+                    print(f"warn: probe snapshot corrupt ({e}); carrying prior spec probes")
+            try:
+                prior_spec = load_json(spec_path)
+                prior_probes = prior_spec.get("auth_probes", {}) or {}
+            except (FileNotFoundError, json.JSONDecodeError):
+                prior_probes = {}
+            probes_offline = offline_probes or prior_probes
+            docs_note = ("offline rebuild: probes carried from "
+                         + ("probe snapshot" if offline_probes else
+                            ("prior spec" if prior_probes else "nothing (empty)")))
     except GuardError as e:
         print(f"GUARD FAIL: {e}")
         print(f"kept last good spec untouched: {spec_path}")
@@ -235,7 +303,7 @@ def main():
     # free chat model = first live-free id serving /chat/completions,
     # paid chat model = first live-paid id serving /chat/completions,
     # responses model = first live-free id serving /responses.
-    probes: dict = {}
+    probes: dict = dict(probes_offline) if not use_network else {}
     if use_network:
         def pick(pool: list[str], endpoint: str) -> str | None:
             for mid in pool:
@@ -281,6 +349,10 @@ def main():
                 probes[label] = {"status": 200, "count": len(d.get("data", []))}
             except GuardError as e:
                 probes[label] = {"status": -1, "error": str(e)[:120]}
+        if probes.get("models-noauth", {}).get("status") != 200 and not args.force:
+            print("REFUSING to snapshot probes: models listing unreachable (API down?)")
+            print(f"kept last good spec untouched: {spec_path}")
+            sys.exit(2)
         atomic_write_json(os.path.join(snap_dir, f"spec-probes-{stamp}.json"), probes)
 
     cheapest = sorted(((k, v.get("cost", {})) for k, v in op_models.items()
@@ -371,7 +443,26 @@ def main():
                          "mismatches": price_mismatch},
         "models": models_table,
     }
-    atomic_write_json(spec_path, spec_json)
+    # ---- validation gates: good data is never overwritten by bad/empty ----
+    prior = None
+    if os.path.exists(spec_path):
+        try:
+            prior = load_json(spec_path)
+        except Exception as e:
+            print(f"prior spec unreadable ({e}); treating as no prior")
+    errors, warnings = validate_spec(spec_json, prior, expect_probes=use_network)
+    for w in warnings:
+        print(f"WARNING: {w}")
+    if errors and not args.force:
+        print("REFUSING to overwrite spec/reports:")
+        for e in errors:
+            print(f"  - {e}")
+        print(f"kept previous outputs; fix the cause or pass --force")
+        sys.exit(2)
+    for e in errors:
+        print(f"WARNING (--force): {e}")
+    from guards import write_json_with_prev
+    write_json_with_prev(spec_path, spec_json)
     atomic_write_text(os.path.join(out_dir, "REPORT.md"), render_spec_md(spec_json))
     atomic_write_text(os.path.join(out_dir, "REPORT.txt"), render_spec_txt(spec_json))
 

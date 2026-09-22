@@ -1,4 +1,4 @@
-# opencode models spec (20260922T103236Z UTC)
+# opencode models spec (20260922T104554Z UTC)
 
 Drift-free snapshot built live by `harness/build_spec.py` (guarded: aborts
 before writing rather than publishing bad data). Rerun to refresh.

@@ -1,6 +1,9 @@
 # large refetchable catalog payloads (5MB each, live source of truth)
 snapshots/models-api-*.json
 snapshots/catalog-*.json
+# atomic-write temp files + prior-spec backups (local, never commit)
+*.tmp
+*.prev.json
 # python cache
 __pycache__/
 *.pyc

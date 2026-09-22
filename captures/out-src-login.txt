@@ -1,8 +1,8 @@
 [0m
 ┌  Log in
 │
-●  Go to: https://opencode.ai/console/device?user_code=ZNPN-MRPQ&client_id=opencode-cli
+●  Go to: https://opencode.ai/console/device?user_code=***&client_id=opencode-cli
 │
-●  Enter code: ZNPN-MRPQ
+●  Enter code: ***
 [?25l│
 ◒  Waiting for authorization[999D[J◐  Waiting for authorization[999D[J◓  Waiting for authorization[999D[J◑  Waiting for authorization[999D[J◒  Waiting for authorization[999D[J◐  Waiting for authorization[999D[J◓  Waiting for authorization[999D[J◑  Waiting for authorization[999D[J◒  Waiting for authorization.[999D[J◐  Waiting for authorization.[999D[J◓  Waiting for authorization.[999D[J◑  Waiting for authorization.[999D[J◒  Waiting for authorization.[999D[J◐  Waiting for authorization.[999D[J◓  Waiting for authorization.[999D[J◑  Waiting for authorization.[999D[J◒  Waiting for authorization..[999D[J◐  Waiting for authorization..[999D[J◓  Waiting for authorization..[999D[J◑  Waiting for authorization..[999D[J◒  Waiting for authorization..[999D[J◐  Waiting for authorization..[999D[J◓  Waiting for authorization..[999D[J◑  Waiting for authorization..[999D[J◒  Waiting for authorization...[999D[J◐  Waiting for authorization...[999D[J◓  Waiting for authorization...[999D[J◑  Waiting for authorization...[999D[J◒  Waiting for authorization...[999D[J◐  Waiting for authorization...[999D[J◓  Waiting for authorization...[999D[J◑  Waiting for authorization...[999D[J◒  Waiting for authorization...[999D[J◐  Waiti

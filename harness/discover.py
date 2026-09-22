@@ -483,6 +483,30 @@ def render_routes_txt(report: dict) -> str:
     return "\n".join(L)
 
 
+def validate_routes(report: dict, prior: dict | None):
+    """Returns (errors, warnings). Errors refuse the write (no --force)."""
+    errors, warnings = [], []
+    c = report.get("counts", {})
+    merged = c.get("merged", 0)
+    interesting = c.get("interesting", 0)
+    if merged == 0:
+        errors.append("zero merged routes (openapi parse broke?)")
+    if interesting == 0:
+        errors.append("zero interesting routes (scoring broke?)")
+    urls = [f"{i['method']} {i['path']}" for i in report.get("interesting", [])]
+    if not any("/zen/v1/models" in u for u in urls):
+        errors.append("zen models route missing from interesting set")
+    if not any(u.startswith("GET /api/model") for u in urls):
+        errors.append("instance model route missing from interesting set")
+    if prior:
+        pm = prior.get("counts", {}).get("merged", 0) or 0
+        if pm and merged < max(50, pm // 2):
+            errors.append(f"routes collapsed {pm} -> {merged} (parse broke?)")
+        elif pm and merged < pm:
+            warnings.append(f"routes shrank {pm} -> {merged}")
+    return errors, warnings
+
+
 def main():
     ap = argparse.ArgumentParser(description="oc-routes discover harness")
     ap.add_argument("--src", default=None, help="path to opencode checkout (default: auto-detect ../opencode-src, ./opencode-src)")
@@ -491,6 +515,8 @@ def main():
     ap.add_argument("--no-network", action="store_true", help="offline: use snapshots only, skip live probing")
     ap.add_argument("--report-only", action="store_true",
                     help="render REPORT twins from existing routes.json; no network")
+    ap.add_argument("--force", action="store_true",
+                    help="write outputs even when validation gates fail")
     ap.add_argument("--json", action="store_true", help="emit JSON report on stdout instead of human report")
     args = ap.parse_args()
 
@@ -512,8 +538,14 @@ def main():
     out_dir = os.path.dirname(os.path.abspath(out_path))
 
     if args.report_only:
-        from report_lib import md_table as _md, txt_table as _tx
-        report = load_json(out_path)
+        try:
+            report = load_json(out_path)
+        except FileNotFoundError:
+            print(f"no inventory at {out_path}; run a live pass first")
+            sys.exit(2)
+        except json.JSONDecodeError as e:
+            print(f"inventory corrupt: {e}; refusing")
+            sys.exit(2)
         atomic_write_text(os.path.join(out_dir, "routes-REPORT.md"),
                           render_routes_md(report))
         atomic_write_text(os.path.join(out_dir, "routes-REPORT.txt"),
@@ -573,6 +605,10 @@ def main():
     # S5/S6
     saas_routes, probes = probe_live_extra(use_network)
     if use_network:
+        if probes.get("GET /zen/v1/models noauth", {}).get("status") != 200 and not args.force:
+            print("REFUSING to snapshot probes: models listing unreachable (API down?)")
+            print(f"kept last good inventory untouched: {out_path}")
+            sys.exit(2)
         atomic_write_json(os.path.join(snap_dir, f"probes-{stamp}.json"), probes)
         notes.append(f"S5/S6 live probes: {len(probes)} checks")
 
@@ -666,7 +702,25 @@ def main():
     }
 
     if args.out != "-":
-        atomic_write_json(out_path, report)
+        prior = None
+        if os.path.exists(out_path):
+            try:
+                prior = load_json(out_path)
+            except Exception as e:
+                print(f"prior inventory unreadable ({e}); treating as no prior")
+        errors, warnings = validate_routes(report, prior)
+        for w in warnings:
+            print(f"WARNING: {w}")
+        if errors and not args.force:
+            print("REFUSING to overwrite inventory/reports:")
+            for e in errors:
+                print(f"  - {e}")
+            print("kept previous outputs; fix the cause or pass --force")
+            sys.exit(2)
+        for e in errors:
+            print(f"WARNING (--force): {e}")
+        from guards import write_json_with_prev
+        write_json_with_prev(out_path, report)
         atomic_write_text(os.path.join(out_dir, "routes-REPORT.md"),
                           render_routes_md(report))
         atomic_write_text(os.path.join(out_dir, "routes-REPORT.txt"),

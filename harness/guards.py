@@ -91,7 +91,7 @@ def validate(cond: bool, msg: str):
 def atomic_write_bytes(path: str, data: bytes):
     d = os.path.dirname(os.path.abspath(path))
     os.makedirs(d, exist_ok=True)
-    tmp = path + f".tmp-{os.getpid()}"
+    tmp = path + ".tmp"
     with open(tmp, "wb") as f:
         f.write(data)
         f.flush()
@@ -99,7 +99,26 @@ def atomic_write_bytes(path: str, data: bytes):
             os.fsync(f.fileno())
         except OSError:
             pass
-    os.rename(tmp, path)
+    os.replace(tmp, path)
+
+
+def keep_prev(path: str):
+    """Keep the current file as <path>.prev.json (local backup, gitignored).
+    No-op when nothing exists yet. Never raises."""
+    try:
+        if not os.path.exists(path):
+            return
+        with open(path, "rb") as f:
+            data = f.read()
+        atomic_write_bytes(path + ".prev.json", data)
+    except OSError:
+        pass
+
+
+def write_json_with_prev(path: str, obj):
+    """Atomic JSON write that keeps the prior file as .prev.json first."""
+    keep_prev(path)
+    atomic_write_json(path, obj)
 
 
 def atomic_write_json(path: str, obj):

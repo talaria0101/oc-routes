@@ -42,6 +42,15 @@
 
 none: every captured endpoint matches the modeled surface
 
+## Tap host allowlist verdict
+
+- [ok] `127.0.0.1` hits=1 via dns
+- [ok] `models.opencode.ai` hits=8 via fetch,proxy_connect,tls_sni
+- [ok] `opencode.ai` hits=96 via dns,fetch,proxy_connect,tls_sni
+- [ok] `registry.npmjs.org` hits=59 via fetch,proxy_connect,tls_sni
+
+Verdict: PASS - no unknown hosts.
+
 ## Limits
 
 - No TCP bind in the sandbox: capture is in-process (LD_PRELOAD dns/connect/SNI tap + fetch hook), same host visibility as a TLS proxy.

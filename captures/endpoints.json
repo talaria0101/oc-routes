@@ -63,7 +63,6 @@
   ],
   "hosts": [
     "127.0.0.1",
-    "169.254.169.1",
     "models.opencode.ai",
     "opencode.ai",
     "registry.npmjs.org"
