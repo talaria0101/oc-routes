@@ -1,0 +1,3 @@
+{"ts":1790068095,"pid":1100,"comm":"opencode","ev":"connect","ip":"169.254.169.1","port":"36341","fam":2}
+{"ts":1790068095,"pid":1100,"comm":"opencode","ev":"proxy_connect","via":"send","target":"models.opencode.ai:443 HTTP/1.1"}
+{"ts":1790068095,"pid":1100,"comm":"opencode","ev":"tls_sni","via":"send","sni":"models.opencode.ai"}

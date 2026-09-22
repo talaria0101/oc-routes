@@ -6,3 +6,5 @@ __pycache__/
 *.pyc
 # local src checkouts
 opencode-src/
+# scratch prebuilt CLI (reinstall: bun add opencode-ai in /tmp/oc-bin)
+oc-bin/

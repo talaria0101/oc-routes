@@ -1,0 +1,9 @@
+{"ts":1790069305,"pid":1779,"comm":"bun","ev":"connect","ip":"169.254.169.1","port":"36341","fam":2}
+{"ts":1790069305,"pid":1779,"comm":"bun","ev":"proxy_connect","via":"send","target":"opencode.ai:443 HTTP/1.1"}
+{"ts":1790069305,"pid":1779,"comm":"bun","ev":"tls_sni","via":"send","sni":"opencode.ai"}
+{"ts":1790069306,"pid":1828,"comm":"w3m","ev":"dns","node":"opencode.ai","service":""}
+{"ts":1790069306,"pid":1828,"comm":"w3m","ev":"dns","node":"169.254.169.1","service":"36341"}
+{"ts":1790069306,"pid":1828,"comm":"w3m","ev":"connect","ip":"169.254.169.1","port":"36341","fam":2}
+{"ts":1790069306,"pid":1828,"comm":"w3m","ev":"proxy_connect","via":"write","target":"opencode.ai:443 HTTP/1.0"}
+{"ts":1790069306,"pid":1828,"comm":"w3m","ev":"dns","node":"opencode.ai","service":""}
+{"ts":1790069306,"pid":1828,"comm":"w3m","ev":"tls_sni","via":"write","sni":"opencode.ai"}

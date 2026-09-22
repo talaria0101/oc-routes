@@ -1,0 +1,6 @@
+{"ts":1790069293,"pid":1740,"comm":"bun","ev":"connect","ip":"169.254.169.1","port":"36341","fam":2}
+{"ts":1790069293,"pid":1740,"comm":"bun","ev":"proxy_connect","via":"send","target":"models.opencode.ai:443 HTTP/1.1"}
+{"ts":1790069293,"pid":1740,"comm":"bun","ev":"tls_sni","via":"send","sni":"models.opencode.ai"}
+{"ts":1790069293,"pid":1740,"comm":"bun","ev":"connect","ip":"169.254.169.1","port":"36341","fam":2}
+{"ts":1790069293,"pid":1740,"comm":"bun","ev":"proxy_connect","via":"send","target":"registry.npmjs.org:443 HTTP/1.1"}
+{"ts":1790069293,"pid":1740,"comm":"bun","ev":"tls_sni","via":"send","sni":"registry.npmjs.org"}

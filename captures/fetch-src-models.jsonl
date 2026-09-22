@@ -1,0 +1,4 @@
+{"ev":"tap_ready","argv":"/home/qaidvoid/.local/share/bun/bin/bun /workspace/opencode-src/packages/opencode/src/index.ts models --refresh","ts":"2026-09-22T09:28:12.210Z","pid":1740}
+{"ev":"fetch","method":"GET","url":"https://models.opencode.ai/api.json","host":"models.opencode.ai","path":"/api.json","authed":false,"ts":"2026-09-22T09:28:13.429Z","pid":1740}
+{"ev":"fetch","method":"GET","url":"https://registry.npmjs.org/@opencode-ai%2fplugin","host":"registry.npmjs.org","path":"/@opencode-ai%2fplugin","authed":false,"ts":"2026-09-22T09:28:13.867Z","pid":1740}
+{"ev":"fetch","method":"GET","url":"https://models.opencode.ai/api.json","host":"models.opencode.ai","path":"/api.json","authed":false,"ts":"2026-09-22T09:28:13.942Z","pid":1740}

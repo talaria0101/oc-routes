@@ -86,3 +86,19 @@ Go lane is paid-only by catalog (no cost==0 under opencode-go except ox-alpha-fr
 - `POST https://opencode.ai/zen/v1/chat/completions|responses|messages` (+ go twins).
 - `GET https://opencode.ai/console/api/config` (per-workspace provider/model config, authed).
 
+## MITM drive findings (2026-09-22, CLI 1.18.32, `captures/`)
+
+- Egress hosts observed: models.opencode.ai, opencode.ai,
+  registry.npmjs.org. Nothing else. Analyzer PASS.
+- Exact URLs from source run: `GET /api.json` (x2 per refresh),
+  `GET /@opencode-ai%2fplugin` (npm plugin metadata),
+  `POST /console/auth/device/code` + poll `POST /console/auth/device/token`.
+- `models` cached/verbose/stats/providers-list are network-silent (0 taps).
+- Binary 1.18.32 has no local `opencode-go` provider
+  (`models opencode-go` -> Provider not found); go lane is console-gated.
+- `auth login --provider opencode` is API-key prompt
+  (https://opencode.ai/auth), not device flow; device flow is
+  `console login` only.
+- `serve` cannot bind in this sandbox (ServeError, same EPERM as any INET
+  bind); instance-API enumeration stays static + live-openapi based.
+

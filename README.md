@@ -61,6 +61,28 @@ normalization (instance groups declare bare `/session`, served under `/api`).
 probes the auth gate (free-noauth, free-public, paid-noauth, models-noauth),
 and writes the drift-free spec.
 
+## MITM drive: the CLI under a tap (`harness/mitm/`)
+
+Static analysis can miss endpoints, so the harness also drives the real CLI
+1.18.32 and records everything it touches. The sandbox denies INET bind(2)
+and ptrace, so a listen-socket proxy is impossible here; the instrument is
+equivalent without listening:
+
+- `preload.c` -> `netlog.so` (LD_PRELOAD, C, no deps): logs every
+  `getaddrinfo` (DNS intent), `connect` (real peer), and scans `send` /
+  `write` for `CONNECT host:port` proxy lines and TLS ClientHello SNI.
+  Works on any binary, encrypted traffic included, nothing bound, no CA.
+- `tap_fetch.js` (`bun --preload`): logs plaintext method + full URL for
+  every fetch/http request when running the CLI from source.
+- `drive.sh`: safe battery (`timeout -k`, stdin /dev/null) over models,
+  providers, stats, console login, auth login, serve.
+- `analyze.py`: diffs captured hosts/URLs against the inventory. PASS on
+  2026-09-22: 3 real hosts (models.opencode.ai, opencode.ai,
+  registry.npmjs.org), 4 exact URLs, zero outside the modeled surface.
+- `mitm.py`: classic intercepting proxy for open networks (needs bind).
+
+Raw evidence in `captures/` (net-*.log host taps, fetch-*.jsonl exact URLs).
+
 ## Answers (2026-09-22, see `spec/spec.md` + `spec/opencode-models.json`)
 
 - Available: live zen 76 models, live go 40. Catalog has 105 under `opencode`
