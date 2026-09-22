@@ -12,14 +12,14 @@
     "bytes": 3309
   },
   "POST /zen/v1/chat/completions free-noauth": {
-    "status": 403,
-    "error_type": "FreeTierError",
-    "message": "Error from provider (Console): OpenCode's free tier can only be used from within OpenCode"
+    "status": 429,
+    "error_type": "FreeUsageLimitError",
+    "message": "Rate limit exceeded. Please try again later."
   },
   "POST /zen/v1/chat/completions free-public": {
-    "status": 403,
-    "error_type": "FreeTierError",
-    "message": "Error from provider (Console): OpenCode's free tier can only be used from within OpenCode"
+    "status": 429,
+    "error_type": "FreeUsageLimitError",
+    "message": "Rate limit exceeded. Please try again later."
   },
   "POST /zen/v1/chat/completions paid-noauth": {
     "status": 401,

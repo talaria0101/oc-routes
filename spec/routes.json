@@ -1,5 +1,5 @@
 {
-  "generated_at": "20260922T085859Z",
+  "generated_at": "20260922T103143Z",
   "notes": [
     "S1 live openapi: 136 method+path rows from https://opencode.ai/v2/openapi.json",
     "S2 src groups: 188 endpoint rows from 39 group files under /workspace/opencode-src",
@@ -41,14 +41,14 @@
       "bytes": 3309
     },
     "POST /zen/v1/chat/completions free-noauth": {
-      "status": 403,
-      "error_type": "FreeTierError",
-      "message": "Error from provider (Console): OpenCode's free tier can only be used from within OpenCode"
+      "status": 429,
+      "error_type": "FreeUsageLimitError",
+      "message": "Rate limit exceeded. Please try again later."
     },
     "POST /zen/v1/chat/completions free-public": {
-      "status": 403,
-      "error_type": "FreeTierError",
-      "message": "Error from provider (Console): OpenCode's free tier can only be used from within OpenCode"
+      "status": 429,
+      "error_type": "FreeUsageLimitError",
+      "message": "Rate limit exceeded. Please try again later."
     },
     "POST /zen/v1/chat/completions paid-noauth": {
       "status": 401,

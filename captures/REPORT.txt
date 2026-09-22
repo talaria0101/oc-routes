@@ -1,0 +1,38 @@
+CLI DRIVE REPORT (opencode)
+============================================================
+
+RUNS
+run                  exit  time  events
+-------------------  ----  ----  ------
+auth-login-opencode  ?     ?s    87
+console-login        ?     ?s    9
+login-device         ?     ?s    0
+models-cached        ?     ?s    0
+models-opencode      ?     ?s    0
+models-opencode-go   ?     ?s    0
+models-refresh       ?     ?s    3
+models-zen-verbose   ?     ?s    0
+orgs                 ?     ?s    0
+providers-list       ?     ?s    0
+serve                ?     ?s    1
+src-login            ?     ?s    9
+src-models           ?     ?s    6
+startup-check        ?     ?s    0
+stats                ?     ?s    0
+upgrade              ?     ?s    0
+upgrade-check        ?     ?s    0
+
+
+ENDPOINTS
+endpoint                                      hits  status  seen_in
+--------------------------------------------  ----  ------  ----------------------------------
+GET models.opencode.ai/api.json               2             src-models
+GET registry.npmjs.org/@opencode-ai%2fplugin  1             src-models
+POST opencode.ai/console/auth/device/code     1             src-login
+POST opencode.ai/console/auth/device/token    83            src-login
+TLS models.opencode.ai:443                    3             auth-login-opencode,models-refresh
+TLS opencode.ai:443                           4             console-login,src-login
+TLS registry.npmjs.org:443                    29            auth-login-opencode,src-models
+
+
+NEW SURFACE: none

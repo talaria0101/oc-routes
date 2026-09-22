@@ -1,0 +1,72 @@
+{
+  "endpoints": [
+    {
+      "endpoint": "GET models.opencode.ai/api.json",
+      "hits": 2,
+      "statuses": [],
+      "seen_in": [
+        "src-models"
+      ]
+    },
+    {
+      "endpoint": "GET registry.npmjs.org/@opencode-ai%2fplugin",
+      "hits": 1,
+      "statuses": [],
+      "seen_in": [
+        "src-models"
+      ]
+    },
+    {
+      "endpoint": "POST opencode.ai/console/auth/device/code",
+      "hits": 1,
+      "statuses": [],
+      "seen_in": [
+        "src-login"
+      ]
+    },
+    {
+      "endpoint": "POST opencode.ai/console/auth/device/token",
+      "hits": 83,
+      "statuses": [],
+      "seen_in": [
+        "src-login"
+      ]
+    },
+    {
+      "endpoint": "TLS models.opencode.ai:443",
+      "hits": 3,
+      "statuses": [],
+      "seen_in": [
+        "auth-login-opencode",
+        "models-refresh",
+        "src-models"
+      ]
+    },
+    {
+      "endpoint": "TLS opencode.ai:443",
+      "hits": 4,
+      "statuses": [],
+      "seen_in": [
+        "console-login",
+        "src-login"
+      ]
+    },
+    {
+      "endpoint": "TLS registry.npmjs.org:443",
+      "hits": 29,
+      "statuses": [],
+      "seen_in": [
+        "auth-login-opencode",
+        "src-models"
+      ]
+    }
+  ],
+  "hosts": [
+    "127.0.0.1",
+    "169.254.169.1",
+    "models.opencode.ai",
+    "opencode.ai",
+    "registry.npmjs.org"
+  ],
+  "new_hosts": []
+}

@@ -33,6 +33,12 @@ re-fetched; src parsing only flags drift.
   `providers`, `login/logout/orgs`, `serve`, `auth`, `run`, `debug/*`, ...).
   `opencode models --verbose` prints per-model cost metadata; `--refresh`
   refetches the models cache.
+- S8 docs tables: `https://opencode.ai/docs/zen` embeds a per-model table
+  (id, serving endpoint, SDK package) and a pricing table (per 1M tokens).
+  Parsed live every run: per-model endpoint mapping (muse-spark serves
+  `/responses` only, jev serves `/systemone`) plus a price cross-check
+  against the catalog (57/86 rows agree; mismatches recorded in-spec).
+  The site JS bundle has no pricing data (checked, negative result).
 
 Src checkout used for this pass: `anomalyco/opencode @ fe3f3a4` (dev,
 2026-09-22). The harness accepts any checkout via `--src`.
@@ -40,14 +46,20 @@ Src checkout used for this pass: `anomalyco/opencode @ fe3f3a4` (dev,
 ## Quick start
 
 ```bash
-./run.sh                          # discover + build spec (needs network)
+./run.sh                          # full refresh (needs network)
+./run.sh --report-only            # re-render all MD/TXT twins offline
 ./run.sh --src /path/to/opencode  # pin a checkout for S2/S3
-python3 harness/discover.py --help
-python3 harness/build_spec.py --help
-python3 harness/discover.py --no-network   # offline from snapshots/
+python3 harness/discover.py --report-only     # routes twins only
+python3 harness/build_spec.py --report-only   # spec twins only
+python3 harness/mitm/analyze.py --caps captures  # captures curation
 ```
 
 Stdlib only (python3, no pip deps). `curl` not required.
+
+Guards: every fetch is validated (HTTP 200, min bytes, JSON shape, sane
+counts) and every JSON write is atomic (tmp + fsync + rename). A failed
+run aborts BEFORE writing, keeping the last good outputs; rerun later.
+Large `models-api`/`catalog` snapshots are gitignored and refetched live.
 
 ## What the harness does
 
@@ -69,13 +81,18 @@ and ptrace, so a listen-socket proxy is impossible here; the instrument is
 equivalent without listening:
 
 - `preload.c` -> `netlog.so` (LD_PRELOAD, C, no deps): logs every
-  `getaddrinfo` (DNS intent), `connect` (real peer), and scans `send` /
-  `write` for `CONNECT host:port` proxy lines and TLS ClientHello SNI.
-  Works on any binary, encrypted traffic included, nothing bound, no CA.
+  `getaddrinfo` (DNS intent), `connect` (real peer), `execve` (subprocess
+  spawns), and scans `send` / `write` for `CONNECT host:port` proxy lines
+  and TLS ClientHello SNI. Works on any binary, encrypted traffic
+  included, nothing bound, no CA.
 - `tap_fetch.js` (`bun --preload`): logs plaintext method + full URL for
   every fetch/http request when running the CLI from source.
 - `drive.sh`: safe battery (`timeout -k`, stdin /dev/null) over models,
-  providers, stats, console login, auth login, serve.
+  providers, stats, console login, auth login, serve. Writes
+  `captures/manifest.json`; analyzer falls back to inferred runs without it.
+- `pty_drive.py`: pty runner with absolute deadline + SIGKILL for
+  interactive flows (console login polls forever, ignores SIGTERM).
+  Exits 3 where the sandbox has no pty devices; drive.sh path covers it.
 - `analyze.py`: diffs captured hosts/URLs against the inventory. PASS on
   2026-09-22: 3 real hosts (models.opencode.ai, opencode.ai,
   registry.npmjs.org), 4 exact URLs, zero outside the modeled surface.
@@ -98,19 +115,42 @@ Raw evidence in `captures/` (net-*.log host taps, fetch-*.jsonl exact URLs).
   muse-spark-1.2-contributor-free, muse-spark-1.3-contributor-free,
   nemotron-3-ultra-free, nemotron-3.5-lightning-free.
 - Without auth: `GET /zen/v1/models` YES (200, identical with `Bearer public`).
-  `POST /zen/v1/chat/completions` NO: paid -> 401 Missing API key; free ->
-  403 FreeTierError (only within OpenCode) or 500 for a few ids. Console
-  `/api/{user,orgs,config}` -> 401. CLI unauth keeps only `cost.input==0`
-  with `apiKey=public` (`provider.ts opencode()`), but inference still gated
-  server-side (`handler.ts` allowAnonymous/validateBilling).
+  `POST /zen/v1/chat/completions|responses` NO: paid -> 401 Missing API key
+  (stable); free -> gated (403 FreeTierError on earlier runs, 429
+  FreeUsageLimitError this run). Wrong-endpoint probes give 500
+  (muse-spark serves /responses only, jev serves /systemone, claude serves
+  /messages). Console `/api/{user,orgs,config}` -> 401. CLI unauth keeps
+  only `cost.input==0` with `apiKey=public` (`provider.ts opencode()`), but
+  inference still gated server-side (`handler.ts` allowAnonymous/validateBilling).
+- Docs cross-check: 57/86 price rows agree; 2 real mismatches recorded
+  (Kimi K2.5 cache_read docs 0.1 vs catalog 0.08; DeepSeek V4 Pro output
+  docs 3.48 vs catalog 3.84).
+
+## What we took from cc-routes (sister repo)
+
+- Every JSON artifact gets MD + TXT twins rendered from the JSON itself,
+  with `--report-only` offline re-render on all three harnesses.
+- Guarded writes: validate (HTTP 200, min bytes, shape, sane counts) then
+  atomic tmp+fsync+rename; abort before writing on failure, never publish
+  empty data. Snapshot dirs keep latest-per-kind only.
+- MITM curation: `endpoints.json` + run/endpoint tables + `NEW_ENDPOINTS.md`
+  surfacing only runtime-new surface, plus subprocess-spawn capture
+  (here via `execve` in the preload tap) and a `manifest.json` run log.
+- Best-effort auxiliaries must not kill the core spec (docs tables warn
+  and continue; go listing warns and continues).
+- Probe models picked live from the current listing, never a pinned id list.
 
 ## Layout
 
 - `harness/discover.py` - multi-source endpoint finder + model/price/deal printer
 - `harness/build_spec.py` - latest drift-free models/prices/deals/auth spec builder
-- `spec/routes.json` - merged inventory (393 unique method+path, interesting ranked)
-- `spec/opencode-models.json` - per-model table (prices, free, live, catalog flags)
-- `spec/spec.md` - human answers to the five questions
+- `spec/routes.json` + `routes-REPORT.md`/`.txt` - merged inventory twins
+- `spec/opencode-models.json` + `REPORT.md`/`.txt` - per-model table twins
+- `spec/spec.md` - long-form answers to the five questions
+- `captures/endpoints.json` + `REPORT.md`/`.txt` + `NEW_ENDPOINTS.md` -
+  curated CLI-drive evidence (raw taps stay beside them)
+- `harness/guards.py` - fetch validators + atomic writes (no bad overwrites)
+- `harness/report_lib.py` - shared MD/TXT renderers (offline re-render)
 - `snapshots/` - small raw fetches (openapi, zen listings, probes). Large
   `models-api-*.json` / `catalog-*.json` are refetched live, gitignored.
 - `run.sh` - one-command refresh

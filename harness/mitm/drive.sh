@@ -29,15 +29,25 @@ fi
 export LD_PRELOAD="$TAP"
 export OPENCODE_DISABLE_AUTOUPDATE=1
 
+MANIFEST="$PWD/$OUT/manifest.json"
+printf '{"cli": "%s", "runs": [' "$BIN" > "$MANIFEST"
+FIRST_RUN=1
 run() { # run <tag> <secs> <cmd...>
   local tag=$1 secs=$2; shift 2
   export OC_ROUTES_NETLOG="$PWD/$OUT/net-$tag.log"
   rm -f "$OC_ROUTES_NETLOG"
   echo "### $tag: $*"
   # shellcheck disable=SC2086
+  local t0 t1 code ev
+  t0=$(date +%s)
   code=0
   timeout -k 5 "$secs" "$@" </dev/null >"$OUT/out-$tag.txt" 2>"$OUT/err-$tag.txt" || code=$?
-  echo "exit=$code net=$(wc -l < "$OC_ROUTES_NETLOG" 2>/dev/null || echo 0)L"
+  t1=$(date +%s)
+  ev=$(wc -l < "$OC_ROUTES_NETLOG" 2>/dev/null || echo 0)
+  echo "exit=$code net=${ev}L"
+  if [ "$FIRST_RUN" = 1 ]; then FIRST_RUN=0; else printf ',' >> "$MANIFEST"; fi
+  printf '{"name": "%s", "rc": %s, "seconds": %s, "events": %s}' \
+    "$tag" "$code" "$((t1 - t0))" "$ev" >> "$MANIFEST"
 }
 
 run models-cached 60 "$BIN" models
@@ -50,4 +60,7 @@ run console-login 30 "$BIN" console login
 run auth-login 25 "$BIN" auth login --provider opencode
 run serve 15 "$BIN" serve --port 18789
 
-echo "done. now: python3 harness/mitm/analyze.py --caps $OUT"
+printf ']}\n' >> "$MANIFEST"
+echo "manifest: $MANIFEST"
+python3 harness/mitm/analyze.py --caps "$OUT"
+echo "done. curated: $OUT/endpoints.json $OUT/REPORT.md $OUT/REPORT.txt $OUT/NEW_ENDPOINTS.md"

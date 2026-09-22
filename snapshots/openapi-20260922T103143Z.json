@@ -14324,12 +14324,20 @@
           },
           "label": {
             "type": "string"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "key",
+              "oauth"
+            ]
           }
         },
         "required": [
           "type",
           "id",
-          "label"
+          "label",
+          "method"
         ],
         "additionalProperties": false
       },

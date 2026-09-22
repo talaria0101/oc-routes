@@ -50,6 +50,7 @@ static int (*real_connect)(int, const struct sockaddr *, socklen_t) = NULL;
 static int (*real_getaddrinfo)(const char *, const char *,
                                const struct addrinfo *,
                                struct addrinfo **) = NULL;
+static int (*real_execve)(const char *, char *const[], char *const[]) = NULL;
 
 static void emit(const char *msg) {
   if (log_fd < 0) return;
@@ -193,6 +194,7 @@ __attribute__((constructor)) static void init(void) {
   real_write = dlsym(RTLD_NEXT, "write");
   real_connect = dlsym(RTLD_NEXT, "connect");
   real_getaddrinfo = dlsym(RTLD_NEXT, "getaddrinfo");
+  real_execve = dlsym(RTLD_NEXT, "execve");
   int fd = open("/proc/self/comm", O_RDONLY);
   if (fd >= 0) {
     ssize_t n = read(fd, comm_name, sizeof(comm_name) - 1);
@@ -239,6 +241,34 @@ int getaddrinfo(const char *node, const char *service,
   int (*libc)(const char *, const char *, const struct addrinfo *, struct addrinfo **);
   libc = dlsym(RTLD_NEXT, "getaddrinfo");
   return libc(node, service, hints, res);
+}
+
+int execve(const char *path, char *const argv[], char *const envp[]) {
+  if (real_execve) {
+    char args[768];
+    size_t o = 0;
+    args[0] = 0;
+    if (argv) {
+      for (int i = 0; i < 6 && argv[i] && o + 4 < sizeof(args); i++) {
+        char esc[160];
+        size_t len = 0;
+        while (argv[i][len] && len < 100) len++;
+        json_escape(argv[i], esc, sizeof(esc), len > 100 ? 100 : len);
+        o += (size_t)snprintf(args + o, sizeof(args) - o, "%s\"%s\"",
+                              i ? "," : "", esc);
+      }
+    }
+    char pe[320];
+    json_escape(path ? path : "?", pe, sizeof(pe), 200);
+    char msg[1152];
+    snprintf(msg, sizeof(msg), "\"ev\":\"exec\",\"path\":\"%s\",\"argv\":[%s]",
+             pe, args);
+    emit(msg);
+    return real_execve(path, argv, envp);
+  }
+  int (*libc)(const char *, char *const[], char *const[]);
+  libc = dlsym(RTLD_NEXT, "execve");
+  return libc(path, argv, envp);
 }
 
 ssize_t send(int sockfd, const void *buf, size_t len, int flags) {

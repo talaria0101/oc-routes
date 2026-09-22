@@ -1,0 +1,36 @@
+OPENCODE ROUTES SPEC (20260922T103236Z (UTC))
+============================================================
+
+COUNTS
+  catalog providers : 223
+  catalog opencode  : 105 (32 free)
+  live zen          : 76 (9 free)
+  live go           : 40
+
+FREE LIVE
+  big-pickle, deepseek-v4-flash-free, ling-3.0-flash-fin-free, mimo-v2.5-free, mimo-v2.6-flash-free, muse-spark-1.2-contributor-free, muse-spark-1.3-contributor-free, nemotron-3-ultra-free, nemotron-3.5-lightning-free
+
+CHEAPEST PAID (per 1M)
+model                         in     out    cache_r
+----------------------------  -----  -----  -------
+gpt-5-nano                    $0.05  $0.4   $0.005
+deepseek-v4-flash-vision-exp  $0.14  $0.28  $0.028
+deepseek-v4-flash             $0.14  $0.28  $0.028
+glm-5.3-flash                 $0.15  $0.5   $0.03
+qwen3.8-flash                 $0.15  $0.47  $0.016
+gpt-5.6-luna                  $0.2   $1.2   $0.02
+gpt-5.4-nano                  $0.2   $1.25  $0.02
+qwen3.5-plus                  $0.2   $1.2   $0.02
+gpt-5.1-codex-mini            $0.25  $2     $0.025
+minimax-m2.1                  $0.3   $1.2   $0.1
+
+AUTH PROBES
+probe                       HTTP  model                         type                 message
+--------------------------  ----  ----------------------------  -------------------  --------------------------------------------
+free-noauth                 429   big-pickle                    FreeUsageLimitError  Rate limit exceeded. Please try again later.
+free-public                 429   big-pickle                    FreeUsageLimitError  Rate limit exceeded. Please try again later.
+paid-noauth                 401   claude-sonnet-4               AuthError            Missing API key.
+muse-free-responses-noauth  429   muse-spark-1.3-contributor-f  FreeUsageLimitError  Rate limit exceeded. Please try again later.
+models-noauth               200
+models-public               200
+

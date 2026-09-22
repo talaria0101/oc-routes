@@ -1,0 +1,104 @@
+# routes inventory (20260922T103143Z)
+
+- S1 live openapi: 136 method+path rows from https://opencode.ai/v2/openapi.json
+- S2 src groups: 188 endpoint rows from 39 group files under /workspace/opencode-src
+- S3 console file routes: 114 rows
+- S4 catalog: {"https://models.opencode.ai/api.json": {"providers": 223}, "https://models.opencode.ai/catalog.json": {"keys": ["providers", "models"], "models": 422}}
+- S5/S6 live probes: 6 checks
+
+## Counts
+
+| source | rows |
+| --- | --- |
+| live-openapi | 136 |
+| src-groups | 188 |
+| console-file-routes | 114 |
+| saas-candidates | 17 |
+| merged-unique | 393 |
+| interesting | 76 |
+
+## Drift
+
+src-not-live: 110, live-not-src: 77
+
+## Model / price / deal / free routes
+
+| score | method | path | labels |
+| --- | --- | --- | --- |
+| 18 | POST | /api/session/{sessionID}/model | model-listing,provider-listing |
+| 14 | GET | /api/model/default | model-listing,model-default |
+| 14 | GET | /config/providers | provider-listing,config-providers |
+| 12 | GET | /workspace/:id/billing/monthly-limit-section | billing,limits |
+| 10 | POST | /api/experimental/generate | model-listing |
+| 10 | DELETE | /api/experimental/session/{sessionID}/instructions/entries/{key} | model-listing |
+| 10 | GET | /api/model | model-listing |
+| 10 | GET | /console/api/config | provider-listing,auth |
+| 10 | GET | /console/api/orgs | provider-listing,auth |
+| 10 | GET | /console/api/user | provider-listing,auth |
+| 10 | POST | /console/auth/device/code | provider-listing,auth |
+| 10 | POST | /console/auth/device/token | provider-listing,auth |
+| 10 | POST | /provider/:providerID/oauth/authorize | provider-listing,auth |
+| 10 | POST | /provider/:providerID/oauth/callback | provider-listing,auth |
+| 10 | GET | /provider/auth | provider-listing,auth |
+| 10 | POST | /tui/open-models | model-listing |
+| 10 | GET | /workspace/:id/model-section | model-listing |
+| 10 | GET | /zen/go/v1/models | model-listing |
+| 10 | OPTIONS | /zen/go/v1/models | model-listing |
+| 10 | ANY | /zen/util/pricing | pricing |
+| 10 | GET | /zen/v1/models | model-listing |
+| 10 | OPTIONS | /zen/v1/models | model-listing |
+| 10 | POST | /zen/v1/models/:model | model-listing |
+| 10 | GET | /zen/v1/models/:model | model-listing |
+| 8 | GET | /api/mcp/resource | catalog |
+| 8 | GET | /api/provider | provider-listing |
+| 8 | GET | /api/provider/{providerID} | provider-listing |
+| 8 | POST | /api/session/{sessionID}/agent | provider-listing |
+| 8 | GET | /api/vcs/base | provider-listing |
+| 8 | POST | /api/websearch | provider-listing |
+| 8 | GET | /api/websearch/provider | provider-listing |
+| 8 | GET | /provider | provider-listing |
+| 8 | GET | /workspace/:id/provider-section | provider-listing |
+| 8 | ANY | /zen/util/provider/anthropic | provider-listing |
+| 8 | ANY | /zen/util/provider/google | provider-listing |
+| 8 | ANY | /zen/util/provider/openai | provider-listing |
+| 8 | ANY | /zen/util/provider/openai-compatible | provider-listing |
+| 8 | ANY | /zen/util/provider/provider | provider-listing |
+| 8 | ANY | /zen/util/provider/systemone | provider-listing |
+| 7 | GET | /workspace/:id/billing | billing |
+| 7 | GET | /workspace/:id/billing/billing-section | billing |
+| 7 | GET | /workspace/:id/billing/black-section | billing |
+| 7 | GET | /workspace/:id/billing/payment-section | billing |
+| 7 | GET | /workspace/:id/billing/redeem-section | billing |
+| 7 | GET | /workspace/:id/billing/reload-section | billing |
+| 5 | POST | /api/support/actions/reset-quota | limits |
+| 4 | GET | /api/experimental/session/stats | usage |
+| 4 | GET | /workspace/:id/usage | usage |
+| 4 | GET | /workspace/:id/usage/graph-section | usage |
+| 4 | GET | /workspace/:id/usage/usage-section | usage |
+| 4 | GET | /zen/go/v1/usage | usage |
+| 3 | GET | /api/session/{sessionID}/context | inference |
+| 3 | GET | /api/session/{sessionID}/message | inference |
+| 3 | GET | /session/:sessionID/message | inference |
+| 3 | POST | /zen/go/v1/chat/completions | inference |
+| 3 | POST | /zen/go/v1/messages | inference |
+| 3 | POST | /zen/go/v1/responses | inference |
+| 3 | POST | /zen/v1/chat/completions | inference |
+| 3 | POST | /zen/v1/messages | inference |
+| 3 | POST | /zen/v1/responses | inference |
+| 2 | POST | /api/integration/{integrationID}/connect/oauth | auth |
+| 2 | GET | /api/integration/{integrationID}/connect/oauth/{attemptID} | auth |
+| 2 | DELETE | /api/integration/{integrationID}/connect/oauth/{attemptID} | auth |
+| 2 | POST | /api/integration/{integrationID}/connect/oauth/{attemptID}/complete | auth |
+| 2 | GET | /auth | auth |
+| 2 | GET | /auth/*callback | auth |
+| 2 | PUT | /auth/:providerID | auth |
+| 2 | DELETE | /auth/:providerID | auth |
+| 2 | GET | /auth/authorize | auth |
+| 2 | GET | /auth/logout | auth |
+| 2 | GET | /auth/status | auth |
+| 2 | POST | /mcp/:name/auth | auth |
+| 2 | DELETE | /mcp/:name/auth | auth |
+| 2 | POST | /mcp/:name/auth/authenticate | auth |
+| 2 | POST | /mcp/:name/auth/callback | auth |
+| 2 | GET | /oauth/opencode/client.json | auth |
+

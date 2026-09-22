@@ -23,12 +23,17 @@ Stdlib only. Works offline if snapshots/src are present (uses cache).
 Usage:
   python3 harness/discover.py [--src ../opencode-src] [--out ../spec/routes.json]
                               [--snapshots ../snapshots] [--no-network]
-                              [--print-model-routes] [--json]
+                              [--print-model-routes] [--json] [--report-only]
 
 Outputs:
   - stdout: human report + MODEL/PRICE/DEAL route table
-  - spec/routes.json (optional): merged machine-readable route inventory
-  - snapshots/*.json (optional): raw live fetches with timestamps
+  - spec/routes.json: merged machine-readable route inventory
+  - spec/routes-REPORT.md + routes-REPORT.txt: human twins, auto-rendered
+    from the JSON (also via --report-only, offline, no network)
+  - snapshots/*.json: raw live fetches with timestamps (validated only)
+
+Guards: the live openapi must parse to >= 50 rows or the run aborts BEFORE
+writing, keeping the last good inventory. Snapshot writes are atomic.
 """
 from __future__ import annotations
 
@@ -40,6 +45,11 @@ import re
 import sys
 import urllib.request
 import urllib.error
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)  # guards, report_lib
+from guards import atomic_write_json, atomic_write_text, load_json  # noqa: E402
+from report_lib import md_table, txt_table  # noqa: E402
 
 OPENAPI_URL = "https://opencode.ai/v2/openapi.json"
 MODELS_API_URL = "https://models.opencode.ai/api.json"
@@ -433,12 +443,54 @@ def score_route(r: dict):
     return total, labels
 
 
+def render_routes_md(report: dict) -> str:
+    L = [f"# routes inventory ({report.get('generated_at', '?')})", ""]
+    for n in report.get("notes", []):
+        L.append(f"- {n}")
+    c = report.get("counts", {})
+    L += ["", "## Counts", "",
+            md_table(["source", "rows"],
+                       [["live-openapi", c.get("live_openapi_rows", "?")],
+                        ["src-groups", c.get("src_group_rows", "?")],
+                        ["console-file-routes", c.get("console_file_rows", "?")],
+                        ["saas-candidates", c.get("saas_candidate_rows", "?")],
+                        ["merged-unique", c.get("merged", "?")],
+                        ["interesting", c.get("interesting", "?")]])]
+    d = report.get("drift", {})
+    L += ["## Drift", "",
+            f"src-not-live: {len(d.get('src_not_in_live', []))}, "
+            f"live-not-src: {len(d.get('live_not_in_src', []))}", ""]
+    L += ["## Model / price / deal / free routes", "",
+            md_table(["score", "method", "path", "labels"],
+                       [[i["score"], i["method"], i["path"],
+                         ",".join(i.get("labels", []))]
+                        for i in report.get("interesting", [])]), ""]
+    return "\n".join(L)
+
+
+def render_routes_txt(report: dict) -> str:
+    L = [f"ROUTES INVENTORY ({report.get('generated_at', '?')})", "=" * 60, ""]
+    for n in report.get("notes", []):
+        L.append(f"- {n}")
+    d = report.get("drift", {})
+    L += ["", f"DRIFT src-not-live: {len(d.get('src_not_in_live', []))} "
+                 f"live-not-src: {len(d.get('live_not_in_src', []))}", "",
+            "MODEL / PRICE / DEAL / FREE ROUTES",
+            txt_table(["score", "method", "path", "labels"],
+                      [[i["score"], i["method"], i["path"],
+                        ",".join(i.get("labels", []))]
+                       for i in report.get("interesting", [])]), ""]
+    return "\n".join(L)
+
+
 def main():
     ap = argparse.ArgumentParser(description="oc-routes discover harness")
     ap.add_argument("--src", default=None, help="path to opencode checkout (default: auto-detect ../opencode-src, ./opencode-src)")
     ap.add_argument("--out", default=None, help="write merged inventory JSON here (default: spec/routes.json relative to repo)")
     ap.add_argument("--snapshots", default=None, help="snapshot dir (default: snapshots/ relative to repo)")
     ap.add_argument("--no-network", action="store_true", help="offline: use snapshots only, skip live probing")
+    ap.add_argument("--report-only", action="store_true",
+                    help="render REPORT twins from existing routes.json; no network")
     ap.add_argument("--json", action="store_true", help="emit JSON report on stdout instead of human report")
     args = ap.parse_args()
 
@@ -456,14 +508,29 @@ def main():
     os.makedirs(snap_dir, exist_ok=True)
     use_network = not args.no_network
 
+    out_path = args.out or os.path.join(repo, "spec", "routes.json")
+    out_dir = os.path.dirname(os.path.abspath(out_path))
+
+    if args.report_only:
+        from report_lib import md_table as _md, txt_table as _tx
+        report = load_json(out_path)
+        atomic_write_text(os.path.join(out_dir, "routes-REPORT.md"),
+                          render_routes_md(report))
+        atomic_write_text(os.path.join(out_dir, "routes-REPORT.txt"),
+                          render_routes_txt(report))
+        print(f"reports re-rendered from {out_path} (no network)")
+        return
+
     stamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     notes: list[str] = []
 
-    # S1
+    # S1 (guarded: refuse a thin/broken openapi rather than publishing it)
     openapi_data, s1 = load_openapi(use_network, snap_dir)
+    if len(s1) < 50:
+        print(f"GUARD FAIL: openapi rows {len(s1)} < 50; kept last good: {out_path}")
+        sys.exit(2)
     if use_network:
-        with open(os.path.join(snap_dir, f"openapi-{stamp}.json"), "w") as f:
-            json.dump(openapi_data, f, indent=2)
+        atomic_write_json(os.path.join(snap_dir, f"openapi-{stamp}.json"), openapi_data)
         notes.append(f"S1 live openapi: {len(s1)} method+path rows from {OPENAPI_URL}")
     else:
         notes.append(f"S1 snapshot openapi: {len(s1)} rows (offline)")
@@ -486,15 +553,17 @@ def main():
             try:
                 if url.endswith("api.json"):
                     d = fetch_json(url)
+                    if not isinstance(d, dict) or len(d) < 100:
+                        raise ValueError(f"thin catalog: {len(d) if isinstance(d, dict) else '?'} providers")
                     catalog_info[url] = {"providers": len(d)}
-                    with open(os.path.join(snap_dir, f"models-api-{stamp}.json"), "w") as f:
-                        json.dump(d, f)
+                    atomic_write_json(os.path.join(snap_dir, f"models-api-{stamp}.json"), d)
                 else:
                     d = fetch_json(url)
+                    if not isinstance(d, dict) or "models" not in d:
+                        raise ValueError("catalog shape changed (no models key)")
                     catalog_info[url] = {"keys": list(d.keys())[:10],
                                          "models": len(d.get("models", [])) if isinstance(d.get("models"), list) else len(d.get("models", {}))}
-                    with open(os.path.join(snap_dir, f"catalog-{stamp}.json"), "w") as f:
-                        json.dump(d, f)
+                    atomic_write_json(os.path.join(snap_dir, f"catalog-{stamp}.json"), d)
             except Exception as e:
                 catalog_info[url] = {"error": str(e)}
         notes.append(f"S4 catalog: {json.dumps(catalog_info)}")
@@ -504,8 +573,7 @@ def main():
     # S5/S6
     saas_routes, probes = probe_live_extra(use_network)
     if use_network:
-        with open(os.path.join(snap_dir, f"probes-{stamp}.json"), "w") as f:
-            json.dump(probes, f, indent=2)
+        atomic_write_json(os.path.join(snap_dir, f"probes-{stamp}.json"), probes)
         notes.append(f"S5/S6 live probes: {len(probes)} checks")
 
     # merge: key (METHOD, path-normalized)
@@ -597,11 +665,12 @@ def main():
         ],
     }
 
-    out_path = args.out or os.path.join(repo, "spec", "routes.json")
     if args.out != "-":
-        os.makedirs(os.path.dirname(out_path), exist_ok=True)
-        with open(out_path, "w") as f:
-            json.dump(report, f, indent=2)
+        atomic_write_json(out_path, report)
+        atomic_write_text(os.path.join(out_dir, "routes-REPORT.md"),
+                          render_routes_md(report))
+        atomic_write_text(os.path.join(out_dir, "routes-REPORT.txt"),
+                          render_routes_txt(report))
 
     if args.json:
         print(json.dumps(report, indent=2))

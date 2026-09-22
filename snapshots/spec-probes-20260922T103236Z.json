@@ -1,0 +1,34 @@
+{
+  "free-noauth": {
+    "status": 429,
+    "model": "big-pickle",
+    "error_type": "FreeUsageLimitError",
+    "message": "Rate limit exceeded. Please try again later."
+  },
+  "free-public": {
+    "status": 429,
+    "model": "big-pickle",
+    "error_type": "FreeUsageLimitError",
+    "message": "Rate limit exceeded. Please try again later."
+  },
+  "paid-noauth": {
+    "status": 401,
+    "model": "claude-sonnet-4",
+    "error_type": "AuthError",
+    "message": "Missing API key."
+  },
+  "muse-free-responses-noauth": {
+    "status": 429,
+    "model": "muse-spark-1.3-contributor-free",
+    "error_type": "FreeUsageLimitError",
+    "message": "Rate limit exceeded. Please try again later."
+  },
+  "models-noauth": {
+    "status": 200,
+    "count": 76
+  },
+  "models-public": {
+    "status": 200,
+    "count": 76
+  }
+}
