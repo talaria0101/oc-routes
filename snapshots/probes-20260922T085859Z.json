@@ -1,0 +1,29 @@
+{
+  "GET /zen/v1/models noauth": {
+    "status": 200,
+    "bytes": 6396
+  },
+  "GET /zen/v1/models public": {
+    "status": 200,
+    "bytes": 6396
+  },
+  "GET /zen/go/v1/models noauth": {
+    "status": 200,
+    "bytes": 3309
+  },
+  "POST /zen/v1/chat/completions free-noauth": {
+    "status": 403,
+    "error_type": "FreeTierError",
+    "message": "Error from provider (Console): OpenCode's free tier can only be used from within OpenCode"
+  },
+  "POST /zen/v1/chat/completions free-public": {
+    "status": 403,
+    "error_type": "FreeTierError",
+    "message": "Error from provider (Console): OpenCode's free tier can only be used from within OpenCode"
+  },
+  "POST /zen/v1/chat/completions paid-noauth": {
+    "status": 401,
+    "error_type": "AuthError",
+    "message": "Missing API key."
+  }
+}

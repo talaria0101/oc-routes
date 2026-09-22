@@ -1,0 +1,8 @@
+# large refetchable catalog payloads (5MB each, live source of truth)
+snapshots/models-api-*.json
+snapshots/catalog-*.json
+# python cache
+__pycache__/
+*.pyc
+# local src checkouts
+opencode-src/

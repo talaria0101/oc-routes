@@ -1,0 +1,4641 @@
+{
+  "generated_at": "20260922T085859Z",
+  "notes": [
+    "S1 live openapi: 136 method+path rows from https://opencode.ai/v2/openapi.json",
+    "S2 src groups: 188 endpoint rows from 39 group files under /workspace/opencode-src",
+    "S3 console file routes: 114 rows",
+    "S4 catalog: {\"https://models.opencode.ai/api.json\": {\"providers\": 223}, \"https://models.opencode.ai/catalog.json\": {\"keys\": [\"providers\", \"models\"], \"models\": 422}}",
+    "S5/S6 live probes: 6 checks"
+  ],
+  "counts": {
+    "live_openapi_rows": 136,
+    "src_group_rows": 188,
+    "console_file_rows": 114,
+    "saas_candidate_rows": 17,
+    "merged": 393,
+    "interesting": 76
+  },
+  "catalog": {
+    "https://models.opencode.ai/api.json": {
+      "providers": 223
+    },
+    "https://models.opencode.ai/catalog.json": {
+      "keys": [
+        "providers",
+        "models"
+      ],
+      "models": 422
+    }
+  },
+  "probes": {
+    "GET /zen/v1/models noauth": {
+      "status": 200,
+      "bytes": 6396
+    },
+    "GET /zen/v1/models public": {
+      "status": 200,
+      "bytes": 6396
+    },
+    "GET /zen/go/v1/models noauth": {
+      "status": 200,
+      "bytes": 3309
+    },
+    "POST /zen/v1/chat/completions free-noauth": {
+      "status": 403,
+      "error_type": "FreeTierError",
+      "message": "Error from provider (Console): OpenCode's free tier can only be used from within OpenCode"
+    },
+    "POST /zen/v1/chat/completions free-public": {
+      "status": 403,
+      "error_type": "FreeTierError",
+      "message": "Error from provider (Console): OpenCode's free tier can only be used from within OpenCode"
+    },
+    "POST /zen/v1/chat/completions paid-noauth": {
+      "status": 401,
+      "error_type": "AuthError",
+      "message": "Missing API key."
+    }
+  },
+  "drift": {
+    "src_not_in_live": [
+      [
+        "DELETE",
+        "/api/experimental/project/:param/copy"
+      ],
+      [
+        "DELETE",
+        "/api/experimental/workspace/:param"
+      ],
+      [
+        "DELETE",
+        "/api/experimental/worktree"
+      ],
+      [
+        "DELETE",
+        "/api/integration/attempt/:param"
+      ],
+      [
+        "DELETE",
+        "/api/mcp/:param/auth"
+      ],
+      [
+        "DELETE",
+        "/api/session/:param/message/:param"
+      ],
+      [
+        "DELETE",
+        "/api/session/:param/message/:param/part/:param"
+      ],
+      [
+        "DELETE",
+        "/api/session/:param/share"
+      ],
+      [
+        "DELETE",
+        "/auth/:param"
+      ],
+      [
+        "GET",
+        "/api/config/providers"
+      ],
+      [
+        "GET",
+        "/api/experimental/capabilities"
+      ],
+      [
+        "GET",
+        "/api/experimental/console"
+      ],
+      [
+        "GET",
+        "/api/experimental/console/orgs"
+      ],
+      [
+        "GET",
+        "/api/experimental/resource"
+      ],
+      [
+        "GET",
+        "/api/experimental/session"
+      ],
+      [
+        "GET",
+        "/api/experimental/tool"
+      ],
+      [
+        "GET",
+        "/api/experimental/tool/ids"
+      ],
+      [
+        "GET",
+        "/api/experimental/workspace/adapter"
+      ],
+      [
+        "GET",
+        "/api/experimental/workspace/status"
+      ],
+      [
+        "GET",
+        "/api/experimental/worktree"
+      ],
+      [
+        "GET",
+        "/api/file"
+      ],
+      [
+        "GET",
+        "/api/file/content"
+      ],
+      [
+        "GET",
+        "/api/file/status"
+      ],
+      [
+        "GET",
+        "/api/find"
+      ],
+      [
+        "GET",
+        "/api/find/file"
+      ],
+      [
+        "GET",
+        "/api/find/symbol"
+      ],
+      [
+        "GET",
+        "/api/formatter"
+      ],
+      [
+        "GET",
+        "/api/global/config"
+      ],
+      [
+        "GET",
+        "/api/global/event"
+      ],
+      [
+        "GET",
+        "/api/global/health"
+      ],
+      [
+        "GET",
+        "/api/health"
+      ],
+      [
+        "GET",
+        "/api/integration/attempt/:param"
+      ],
+      [
+        "GET",
+        "/api/lsp"
+      ],
+      [
+        "GET",
+        "/api/path"
+      ],
+      [
+        "GET",
+        "/api/permission"
+      ],
+      [
+        "GET",
+        "/api/project/:param/directories"
+      ],
+      [
+        "GET",
+        "/api/project/current"
+      ],
+      [
+        "GET",
+        "/api/provider/auth"
+      ],
+      [
+        "GET",
+        "/api/pty/shells"
+      ],
+      [
+        "GET",
+        "/api/question"
+      ],
+      [
+        "GET",
+        "/api/question/request"
+      ],
+      [
+        "GET",
+        "/api/session/:param/children"
+      ],
+      [
+        "GET",
+        "/api/session/:param/event"
+      ],
+      [
+        "GET",
+        "/api/session/:param/history"
+      ],
+      [
+        "GET",
+        "/api/session/:param/question"
+      ],
+      [
+        "GET",
+        "/api/session/:param/todo"
+      ],
+      [
+        "GET",
+        "/api/session/status"
+      ],
+      [
+        "GET",
+        "/api/tui/control/next"
+      ],
+      [
+        "GET",
+        "/api/vcs/diff/raw"
+      ],
+      [
+        "PATCH",
+        "/api/config"
+      ],
+      [
+        "PATCH",
+        "/api/global/config"
+      ],
+      [
+        "PATCH",
+        "/api/session/:param/message/:param/part/:param"
+      ],
+      [
+        "POST",
+        "/api/experimental/console/switch"
+      ],
+      [
+        "POST",
+        "/api/experimental/control-plane/move-session"
+      ],
+      [
+        "POST",
+        "/api/experimental/project/:param/copy"
+      ],
+      [
+        "POST",
+        "/api/experimental/project/:param/copy/generate-name"
+      ],
+      [
+        "POST",
+        "/api/experimental/project/:param/copy/refresh"
+      ],
+      [
+        "POST",
+        "/api/experimental/session/:param/background"
+      ],
+      [
+        "POST",
+        "/api/experimental/workspace/sync-list"
+      ],
+      [
+        "POST",
+        "/api/experimental/workspace/warp"
+      ],
+      [
+        "POST",
+        "/api/experimental/worktree"
+      ],
+      [
+        "POST",
+        "/api/experimental/worktree/reset"
+      ],
+      [
+        "POST",
+        "/api/global/dispose"
+      ],
+      [
+        "POST",
+        "/api/global/upgrade"
+      ],
+      [
+        "POST",
+        "/api/instance/dispose"
+      ],
+      [
+        "POST",
+        "/api/integration/attempt/:param/complete"
+      ],
+      [
+        "POST",
+        "/api/log"
+      ],
+      [
+        "POST",
+        "/api/mcp"
+      ],
+      [
+        "POST",
+        "/api/mcp/:param/auth"
+      ],
+      [
+        "POST",
+        "/api/mcp/:param/auth/authenticate"
+      ],
+      [
+        "POST",
+        "/api/mcp/:param/auth/callback"
+      ],
+      [
+        "POST",
+        "/api/mcp/:param/connect"
+      ],
+      [
+        "POST",
+        "/api/mcp/:param/disconnect"
+      ],
+      [
+        "POST",
+        "/api/permission/:param/reply"
+      ],
+      [
+        "POST",
+        "/api/project/git/init"
+      ],
+      [
+        "POST",
+        "/api/provider/:param/oauth/authorize"
+      ],
+      [
+        "POST",
+        "/api/provider/:param/oauth/callback"
+      ],
+      [
+        "POST",
+        "/api/question/:param/reject"
+      ],
+      [
+        "POST",
+        "/api/question/:param/reply"
+      ],
+      [
+        "POST",
+        "/api/session/:param/abort"
+      ],
+      [
+        "POST",
+        "/api/session/:param/init"
+      ],
+      [
+        "POST",
+        "/api/session/:param/message"
+      ],
+      [
+        "POST",
+        "/api/session/:param/permissions/:param"
+      ],
+      [
+        "POST",
+        "/api/session/:param/prompt_async"
+      ],
+      [
+        "POST",
+        "/api/session/:param/question/:param/reject"
+      ],
+      [
+        "POST",
+        "/api/session/:param/question/:param/reply"
+      ],
+      [
+        "POST",
+        "/api/session/:param/revert"
+      ],
+      [
+        "POST",
+        "/api/session/:param/revert/clear"
+      ],
+      [
+        "POST",
+        "/api/session/:param/share"
+      ],
+      [
+        "POST",
+        "/api/session/:param/summarize"
+      ],
+      [
+        "POST",
+        "/api/session/:param/unrevert"
+      ],
+      [
+        "POST",
+        "/api/session/:param/wait"
+      ],
+      [
+        "POST",
+        "/api/sync/history"
+      ],
+      [
+        "POST",
+        "/api/sync/replay"
+      ],
+      [
+        "POST",
+        "/api/sync/start"
+      ],
+      [
+        "POST",
+        "/api/sync/steal"
+      ],
+      [
+        "POST",
+        "/api/tui/append-prompt"
+      ],
+      [
+        "POST",
+        "/api/tui/clear-prompt"
+      ],
+      [
+        "POST",
+        "/api/tui/control/response"
+      ],
+      [
+        "POST",
+        "/api/tui/execute-command"
+      ],
+      [
+        "POST",
+        "/api/tui/open-help"
+      ],
+      [
+        "POST",
+        "/api/tui/open-models"
+      ],
+      [
+        "POST",
+        "/api/tui/open-sessions"
+      ],
+      [
+        "POST",
+        "/api/tui/open-themes"
+      ],
+      [
+        "POST",
+        "/api/tui/publish"
+      ],
+      [
+        "POST",
+        "/api/tui/select-session"
+      ],
+      [
+        "POST",
+        "/api/tui/show-toast"
+      ],
+      [
+        "POST",
+        "/api/tui/submit-prompt"
+      ],
+      [
+        "POST",
+        "/api/vcs/apply"
+      ],
+      [
+        "PUT",
+        "/auth/:param"
+      ]
+    ],
+    "live_not_in_src": [
+      [
+        "DELETE",
+        "/api/debug/location"
+      ],
+      [
+        "DELETE",
+        "/api/experimental/mcp/:param"
+      ],
+      [
+        "DELETE",
+        "/api/experimental/persistent-pty/:param"
+      ],
+      [
+        "DELETE",
+        "/api/experimental/session/:param/instructions/entries/:param"
+      ],
+      [
+        "DELETE",
+        "/api/integration/:param/connect/command/:param"
+      ],
+      [
+        "DELETE",
+        "/api/integration/:param/connect/oauth/:param"
+      ],
+      [
+        "DELETE",
+        "/api/session/:param/form/:param"
+      ],
+      [
+        "DELETE",
+        "/api/session/:param/inbox/:param"
+      ],
+      [
+        "DELETE",
+        "/api/session/:param/revert"
+      ],
+      [
+        "DELETE",
+        "/api/shell/:param"
+      ],
+      [
+        "DELETE",
+        "/api/worktree"
+      ],
+      [
+        "GET",
+        "/api/agent/:param"
+      ],
+      [
+        "GET",
+        "/api/config/shell"
+      ],
+      [
+        "GET",
+        "/api/debug/location"
+      ],
+      [
+        "GET",
+        "/api/experimental/migration/v1"
+      ],
+      [
+        "GET",
+        "/api/experimental/persistent-pty/:param"
+      ],
+      [
+        "GET",
+        "/api/experimental/persistent-pty/:param/connect"
+      ],
+      [
+        "GET",
+        "/api/experimental/persistent-pty/:param/snapshot"
+      ],
+      [
+        "GET",
+        "/api/experimental/session/:param/export"
+      ],
+      [
+        "GET",
+        "/api/experimental/session/:param/instructions/entries"
+      ],
+      [
+        "GET",
+        "/api/experimental/session/:param/log"
+      ],
+      [
+        "GET",
+        "/api/experimental/session/:param/terminal"
+      ],
+      [
+        "GET",
+        "/api/experimental/session/:param/terminal/read"
+      ],
+      [
+        "GET",
+        "/api/experimental/session/stats"
+      ],
+      [
+        "GET",
+        "/api/form"
+      ],
+      [
+        "GET",
+        "/api/info"
+      ],
+      [
+        "GET",
+        "/api/integration/:param/connect/command/:param"
+      ],
+      [
+        "GET",
+        "/api/integration/:param/connect/oauth/:param"
+      ],
+      [
+        "GET",
+        "/api/mcp/resource"
+      ],
+      [
+        "GET",
+        "/api/model/default"
+      ],
+      [
+        "GET",
+        "/api/plugin"
+      ],
+      [
+        "GET",
+        "/api/session/:param/form"
+      ],
+      [
+        "GET",
+        "/api/session/:param/form/:param"
+      ],
+      [
+        "GET",
+        "/api/session/:param/inbox"
+      ],
+      [
+        "GET",
+        "/api/shell"
+      ],
+      [
+        "GET",
+        "/api/shell/:param"
+      ],
+      [
+        "GET",
+        "/api/shell/:param/output"
+      ],
+      [
+        "GET",
+        "/api/vcs/base"
+      ],
+      [
+        "GET",
+        "/api/vcs/branch"
+      ],
+      [
+        "GET",
+        "/api/websearch/provider"
+      ],
+      [
+        "GET",
+        "/api/worktree"
+      ],
+      [
+        "PATCH",
+        "/api/experimental/config"
+      ],
+      [
+        "PATCH",
+        "/api/session/:param/inbox/:param"
+      ],
+      [
+        "POST",
+        "/api/credential/:param/activate"
+      ],
+      [
+        "POST",
+        "/api/experimental/fs/write"
+      ],
+      [
+        "POST",
+        "/api/experimental/generate"
+      ],
+      [
+        "POST",
+        "/api/experimental/integration/wellknown"
+      ],
+      [
+        "POST",
+        "/api/experimental/mcp/:param/connect"
+      ],
+      [
+        "POST",
+        "/api/experimental/mcp/:param/disconnect"
+      ],
+      [
+        "POST",
+        "/api/experimental/persistent-pty/:param/connect-token"
+      ],
+      [
+        "POST",
+        "/api/experimental/persistent-pty/handoff"
+      ],
+      [
+        "POST",
+        "/api/experimental/persistent-pty/shutdown"
+      ],
+      [
+        "POST",
+        "/api/experimental/session/:param/skill"
+      ],
+      [
+        "POST",
+        "/api/experimental/session/:param/terminal"
+      ],
+      [
+        "POST",
+        "/api/experimental/session/:param/wait"
+      ],
+      [
+        "POST",
+        "/api/experimental/session/import"
+      ],
+      [
+        "POST",
+        "/api/integration/:param/connect/command"
+      ],
+      [
+        "POST",
+        "/api/integration/:param/connect/oauth/:param/complete"
+      ],
+      [
+        "POST",
+        "/api/location/reload"
+      ],
+      [
+        "POST",
+        "/api/plugin/check"
+      ],
+      [
+        "POST",
+        "/api/plugin/update"
+      ],
+      [
+        "POST",
+        "/api/rpc/:param/:param"
+      ],
+      [
+        "POST",
+        "/api/session/:param/background"
+      ],
+      [
+        "POST",
+        "/api/session/:param/form"
+      ],
+      [
+        "POST",
+        "/api/session/:param/form/:param/reply"
+      ],
+      [
+        "POST",
+        "/api/session/:param/generate"
+      ],
+      [
+        "POST",
+        "/api/session/:param/move"
+      ],
+      [
+        "POST",
+        "/api/session/:param/synthetic"
+      ],
+      [
+        "POST",
+        "/api/session/:param/view"
+      ],
+      [
+        "POST",
+        "/api/shell"
+      ],
+      [
+        "POST",
+        "/api/websearch"
+      ],
+      [
+        "POST",
+        "/api/worktree"
+      ],
+      [
+        "POST",
+        "/api/worktree/refresh"
+      ],
+      [
+        "PUT",
+        "/api/experimental/mcp/:param"
+      ],
+      [
+        "PUT",
+        "/api/experimental/persistent-pty/:param"
+      ],
+      [
+        "PUT",
+        "/api/experimental/session/:param/instructions/entries/:param"
+      ],
+      [
+        "PUT",
+        "/api/session/:param/environment"
+      ]
+    ]
+  },
+  "interesting": [
+    {
+      "score": 18,
+      "method": "POST",
+      "path": "/api/session/{sessionID}/model",
+      "labels": [
+        "model-listing",
+        "provider-listing"
+      ],
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:session.ts"
+      ],
+      "operationIds": [
+        "session.switchModel",
+        "v2.session.switchModel"
+      ]
+    },
+    {
+      "score": 14,
+      "method": "GET",
+      "path": "/api/model/default",
+      "labels": [
+        "model-listing",
+        "model-default"
+      ],
+      "sources": [
+        "S1:live-openapi"
+      ],
+      "operationIds": [
+        "model.default"
+      ]
+    },
+    {
+      "score": 14,
+      "method": "GET",
+      "path": "/config/providers",
+      "labels": [
+        "provider-listing",
+        "config-providers"
+      ],
+      "sources": [
+        "S2:src:config.ts"
+      ],
+      "operationIds": [
+        "config.providers"
+      ]
+    },
+    {
+      "score": 12,
+      "method": "GET",
+      "path": "/workspace/:id/billing/monthly-limit-section",
+      "labels": [
+        "billing",
+        "limits"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 10,
+      "method": "POST",
+      "path": "/api/experimental/generate",
+      "labels": [
+        "model-listing"
+      ],
+      "sources": [
+        "S1:live-openapi"
+      ],
+      "operationIds": [
+        "experimental.generate.text"
+      ]
+    },
+    {
+      "score": 10,
+      "method": "DELETE",
+      "path": "/api/experimental/session/{sessionID}/instructions/entries/{key}",
+      "labels": [
+        "model-listing"
+      ],
+      "sources": [
+        "S1:live-openapi"
+      ],
+      "operationIds": [
+        "experimental.session.instructions.entry.remove"
+      ]
+    },
+    {
+      "score": 10,
+      "method": "GET",
+      "path": "/api/model",
+      "labels": [
+        "model-listing"
+      ],
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:model.ts"
+      ],
+      "operationIds": [
+        "model.list",
+        "v2.model.list"
+      ]
+    },
+    {
+      "score": 10,
+      "method": "GET",
+      "path": "/console/api/config",
+      "labels": [
+        "provider-listing",
+        "auth"
+      ],
+      "sources": [
+        "S6:console-live"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 10,
+      "method": "GET",
+      "path": "/console/api/orgs",
+      "labels": [
+        "provider-listing",
+        "auth"
+      ],
+      "sources": [
+        "S6:console-live"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 10,
+      "method": "GET",
+      "path": "/console/api/user",
+      "labels": [
+        "provider-listing",
+        "auth"
+      ],
+      "sources": [
+        "S6:console-live"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 10,
+      "method": "POST",
+      "path": "/console/auth/device/code",
+      "labels": [
+        "provider-listing",
+        "auth"
+      ],
+      "sources": [
+        "S6:console-live"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 10,
+      "method": "POST",
+      "path": "/console/auth/device/token",
+      "labels": [
+        "provider-listing",
+        "auth"
+      ],
+      "sources": [
+        "S6:console-live"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 10,
+      "method": "POST",
+      "path": "/provider/:providerID/oauth/authorize",
+      "labels": [
+        "provider-listing",
+        "auth"
+      ],
+      "sources": [
+        "S2:src:provider.ts"
+      ],
+      "operationIds": [
+        "provider.oauth.authorize"
+      ]
+    },
+    {
+      "score": 10,
+      "method": "POST",
+      "path": "/provider/:providerID/oauth/callback",
+      "labels": [
+        "provider-listing",
+        "auth"
+      ],
+      "sources": [
+        "S2:src:provider.ts"
+      ],
+      "operationIds": [
+        "provider.oauth.callback"
+      ]
+    },
+    {
+      "score": 10,
+      "method": "GET",
+      "path": "/provider/auth",
+      "labels": [
+        "provider-listing",
+        "auth"
+      ],
+      "sources": [
+        "S2:src:provider.ts"
+      ],
+      "operationIds": [
+        "provider.auth"
+      ]
+    },
+    {
+      "score": 10,
+      "method": "POST",
+      "path": "/tui/open-models",
+      "labels": [
+        "model-listing"
+      ],
+      "sources": [
+        "S2:src:tui.ts"
+      ],
+      "operationIds": [
+        "tui.openModels"
+      ]
+    },
+    {
+      "score": 10,
+      "method": "GET",
+      "path": "/workspace/:id/model-section",
+      "labels": [
+        "model-listing"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 10,
+      "method": "GET",
+      "path": "/zen/go/v1/models",
+      "labels": [
+        "model-listing"
+      ],
+      "sources": [
+        "S3:console-file-route",
+        "S5:zen-live"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 10,
+      "method": "OPTIONS",
+      "path": "/zen/go/v1/models",
+      "labels": [
+        "model-listing"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 10,
+      "method": "ANY",
+      "path": "/zen/util/pricing",
+      "labels": [
+        "pricing"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 10,
+      "method": "GET",
+      "path": "/zen/v1/models",
+      "labels": [
+        "model-listing"
+      ],
+      "sources": [
+        "S3:console-file-route",
+        "S5:zen-live"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 10,
+      "method": "OPTIONS",
+      "path": "/zen/v1/models",
+      "labels": [
+        "model-listing"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 10,
+      "method": "POST",
+      "path": "/zen/v1/models/:model",
+      "labels": [
+        "model-listing"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 10,
+      "method": "GET",
+      "path": "/zen/v1/models/:model",
+      "labels": [
+        "model-listing"
+      ],
+      "sources": [
+        "S5:zen-live"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 8,
+      "method": "GET",
+      "path": "/api/mcp/resource",
+      "labels": [
+        "catalog"
+      ],
+      "sources": [
+        "S1:live-openapi"
+      ],
+      "operationIds": [
+        "mcp.resource.catalog"
+      ]
+    },
+    {
+      "score": 8,
+      "method": "GET",
+      "path": "/api/provider",
+      "labels": [
+        "provider-listing"
+      ],
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:provider.ts"
+      ],
+      "operationIds": [
+        "provider.list",
+        "v2.provider.list"
+      ]
+    },
+    {
+      "score": 8,
+      "method": "GET",
+      "path": "/api/provider/{providerID}",
+      "labels": [
+        "provider-listing"
+      ],
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:provider.ts"
+      ],
+      "operationIds": [
+        "provider.get",
+        "v2.provider.get"
+      ]
+    },
+    {
+      "score": 8,
+      "method": "POST",
+      "path": "/api/session/{sessionID}/agent",
+      "labels": [
+        "provider-listing"
+      ],
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:session.ts"
+      ],
+      "operationIds": [
+        "session.switchAgent",
+        "v2.session.switchAgent"
+      ]
+    },
+    {
+      "score": 8,
+      "method": "GET",
+      "path": "/api/vcs/base",
+      "labels": [
+        "provider-listing"
+      ],
+      "sources": [
+        "S1:live-openapi"
+      ],
+      "operationIds": [
+        "vcs.base"
+      ]
+    },
+    {
+      "score": 8,
+      "method": "POST",
+      "path": "/api/websearch",
+      "labels": [
+        "provider-listing"
+      ],
+      "sources": [
+        "S1:live-openapi"
+      ],
+      "operationIds": [
+        "websearch.query"
+      ]
+    },
+    {
+      "score": 8,
+      "method": "GET",
+      "path": "/api/websearch/provider",
+      "labels": [
+        "provider-listing"
+      ],
+      "sources": [
+        "S1:live-openapi"
+      ],
+      "operationIds": [
+        "websearch.providers"
+      ]
+    },
+    {
+      "score": 8,
+      "method": "GET",
+      "path": "/provider",
+      "labels": [
+        "provider-listing"
+      ],
+      "sources": [
+        "S2:src:provider.ts"
+      ],
+      "operationIds": [
+        "provider.list"
+      ]
+    },
+    {
+      "score": 8,
+      "method": "GET",
+      "path": "/workspace/:id/provider-section",
+      "labels": [
+        "provider-listing"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 8,
+      "method": "ANY",
+      "path": "/zen/util/provider/anthropic",
+      "labels": [
+        "provider-listing"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 8,
+      "method": "ANY",
+      "path": "/zen/util/provider/google",
+      "labels": [
+        "provider-listing"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 8,
+      "method": "ANY",
+      "path": "/zen/util/provider/openai",
+      "labels": [
+        "provider-listing"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 8,
+      "method": "ANY",
+      "path": "/zen/util/provider/openai-compatible",
+      "labels": [
+        "provider-listing"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 8,
+      "method": "ANY",
+      "path": "/zen/util/provider/provider",
+      "labels": [
+        "provider-listing"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 8,
+      "method": "ANY",
+      "path": "/zen/util/provider/systemone",
+      "labels": [
+        "provider-listing"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 7,
+      "method": "GET",
+      "path": "/workspace/:id/billing",
+      "labels": [
+        "billing"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 7,
+      "method": "GET",
+      "path": "/workspace/:id/billing/billing-section",
+      "labels": [
+        "billing"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 7,
+      "method": "GET",
+      "path": "/workspace/:id/billing/black-section",
+      "labels": [
+        "billing"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 7,
+      "method": "GET",
+      "path": "/workspace/:id/billing/payment-section",
+      "labels": [
+        "billing"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 7,
+      "method": "GET",
+      "path": "/workspace/:id/billing/redeem-section",
+      "labels": [
+        "billing"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 7,
+      "method": "GET",
+      "path": "/workspace/:id/billing/reload-section",
+      "labels": [
+        "billing"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 5,
+      "method": "POST",
+      "path": "/api/support/actions/reset-quota",
+      "labels": [
+        "limits"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 4,
+      "method": "GET",
+      "path": "/api/experimental/session/stats",
+      "labels": [
+        "usage"
+      ],
+      "sources": [
+        "S1:live-openapi"
+      ],
+      "operationIds": [
+        "experimental.session.stats"
+      ]
+    },
+    {
+      "score": 4,
+      "method": "GET",
+      "path": "/workspace/:id/usage",
+      "labels": [
+        "usage"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 4,
+      "method": "GET",
+      "path": "/workspace/:id/usage/graph-section",
+      "labels": [
+        "usage"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 4,
+      "method": "GET",
+      "path": "/workspace/:id/usage/usage-section",
+      "labels": [
+        "usage"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 4,
+      "method": "GET",
+      "path": "/zen/go/v1/usage",
+      "labels": [
+        "usage"
+      ],
+      "sources": [
+        "S3:console-file-route",
+        "S5:zen-live"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 3,
+      "method": "GET",
+      "path": "/api/session/{sessionID}/context",
+      "labels": [
+        "inference"
+      ],
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:session.ts"
+      ],
+      "operationIds": [
+        "session.context",
+        "v2.session.context"
+      ]
+    },
+    {
+      "score": 3,
+      "method": "GET",
+      "path": "/api/session/{sessionID}/message",
+      "labels": [
+        "inference"
+      ],
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:message.ts"
+      ],
+      "operationIds": [
+        "session.message.list",
+        "SessionMessagesResponse"
+      ]
+    },
+    {
+      "score": 3,
+      "method": "GET",
+      "path": "/session/:sessionID/message",
+      "labels": [
+        "inference"
+      ],
+      "sources": [
+        "S2:src:session.ts"
+      ],
+      "operationIds": [
+        "session.messages"
+      ]
+    },
+    {
+      "score": 3,
+      "method": "POST",
+      "path": "/zen/go/v1/chat/completions",
+      "labels": [
+        "inference"
+      ],
+      "sources": [
+        "S3:console-file-route",
+        "S5:zen-live"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 3,
+      "method": "POST",
+      "path": "/zen/go/v1/messages",
+      "labels": [
+        "inference"
+      ],
+      "sources": [
+        "S3:console-file-route",
+        "S5:zen-live"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 3,
+      "method": "POST",
+      "path": "/zen/go/v1/responses",
+      "labels": [
+        "inference"
+      ],
+      "sources": [
+        "S3:console-file-route",
+        "S5:zen-live"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 3,
+      "method": "POST",
+      "path": "/zen/v1/chat/completions",
+      "labels": [
+        "inference"
+      ],
+      "sources": [
+        "S3:console-file-route",
+        "S5:zen-live"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 3,
+      "method": "POST",
+      "path": "/zen/v1/messages",
+      "labels": [
+        "inference"
+      ],
+      "sources": [
+        "S3:console-file-route",
+        "S5:zen-live"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 3,
+      "method": "POST",
+      "path": "/zen/v1/responses",
+      "labels": [
+        "inference"
+      ],
+      "sources": [
+        "S3:console-file-route",
+        "S5:zen-live"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 2,
+      "method": "POST",
+      "path": "/api/integration/{integrationID}/connect/oauth",
+      "labels": [
+        "auth"
+      ],
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:integration.ts"
+      ],
+      "operationIds": [
+        "integration.oauth.connect",
+        "v2.integration.connect.oauth"
+      ]
+    },
+    {
+      "score": 2,
+      "method": "GET",
+      "path": "/api/integration/{integrationID}/connect/oauth/{attemptID}",
+      "labels": [
+        "auth"
+      ],
+      "sources": [
+        "S1:live-openapi"
+      ],
+      "operationIds": [
+        "integration.oauth.status"
+      ]
+    },
+    {
+      "score": 2,
+      "method": "DELETE",
+      "path": "/api/integration/{integrationID}/connect/oauth/{attemptID}",
+      "labels": [
+        "auth"
+      ],
+      "sources": [
+        "S1:live-openapi"
+      ],
+      "operationIds": [
+        "integration.oauth.cancel"
+      ]
+    },
+    {
+      "score": 2,
+      "method": "POST",
+      "path": "/api/integration/{integrationID}/connect/oauth/{attemptID}/complete",
+      "labels": [
+        "auth"
+      ],
+      "sources": [
+        "S1:live-openapi"
+      ],
+      "operationIds": [
+        "integration.oauth.complete"
+      ]
+    },
+    {
+      "score": 2,
+      "method": "GET",
+      "path": "/auth",
+      "labels": [
+        "auth"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 2,
+      "method": "GET",
+      "path": "/auth/*callback",
+      "labels": [
+        "auth"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 2,
+      "method": "PUT",
+      "path": "/auth/:providerID",
+      "labels": [
+        "auth"
+      ],
+      "sources": [
+        "S2:src:control.ts"
+      ],
+      "operationIds": [
+        "auth.set"
+      ]
+    },
+    {
+      "score": 2,
+      "method": "DELETE",
+      "path": "/auth/:providerID",
+      "labels": [
+        "auth"
+      ],
+      "sources": [
+        "S2:src:control.ts"
+      ],
+      "operationIds": [
+        "auth.remove"
+      ]
+    },
+    {
+      "score": 2,
+      "method": "GET",
+      "path": "/auth/authorize",
+      "labels": [
+        "auth"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 2,
+      "method": "GET",
+      "path": "/auth/logout",
+      "labels": [
+        "auth"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 2,
+      "method": "GET",
+      "path": "/auth/status",
+      "labels": [
+        "auth"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    },
+    {
+      "score": 2,
+      "method": "POST",
+      "path": "/mcp/:name/auth",
+      "labels": [
+        "auth"
+      ],
+      "sources": [
+        "S2:src:mcp.ts"
+      ],
+      "operationIds": [
+        "mcp.auth.start"
+      ]
+    },
+    {
+      "score": 2,
+      "method": "DELETE",
+      "path": "/mcp/:name/auth",
+      "labels": [
+        "auth"
+      ],
+      "sources": [
+        "S2:src:mcp.ts"
+      ],
+      "operationIds": [
+        "mcp.auth.remove"
+      ]
+    },
+    {
+      "score": 2,
+      "method": "POST",
+      "path": "/mcp/:name/auth/authenticate",
+      "labels": [
+        "auth"
+      ],
+      "sources": [
+        "S2:src:mcp.ts"
+      ],
+      "operationIds": [
+        "mcp.auth.authenticate"
+      ]
+    },
+    {
+      "score": 2,
+      "method": "POST",
+      "path": "/mcp/:name/auth/callback",
+      "labels": [
+        "auth"
+      ],
+      "sources": [
+        "S2:src:mcp.ts"
+      ],
+      "operationIds": [
+        "mcp.auth.callback"
+      ]
+    },
+    {
+      "score": 2,
+      "method": "GET",
+      "path": "/oauth/opencode/client.json",
+      "labels": [
+        "auth"
+      ],
+      "sources": [
+        "S3:console-file-route"
+      ],
+      "operationIds": []
+    }
+  ],
+  "merged": [
+    {
+      "method": "POST",
+      "path": "/api/session/{sessionID}/model",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/model/default",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/config/providers",
+      "sources": [
+        "S2:src:config.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/:id/billing/monthly-limit-section",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/experimental/generate",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/experimental/session/{sessionID}/instructions/entries/{key}",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/model",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:model.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/console/api/config",
+      "sources": [
+        "S6:console-live"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/console/api/orgs",
+      "sources": [
+        "S6:console-live"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/console/api/user",
+      "sources": [
+        "S6:console-live"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/console/auth/device/code",
+      "sources": [
+        "S6:console-live"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/console/auth/device/token",
+      "sources": [
+        "S6:console-live"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/provider/:providerID/oauth/authorize",
+      "sources": [
+        "S2:src:provider.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/provider/:providerID/oauth/callback",
+      "sources": [
+        "S2:src:provider.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/provider/auth",
+      "sources": [
+        "S2:src:provider.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/tui/open-models",
+      "sources": [
+        "S2:src:tui.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/:id/model-section",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/zen/go/v1/models",
+      "sources": [
+        "S3:console-file-route",
+        "S5:zen-live"
+      ]
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/zen/go/v1/models",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/zen/util/pricing",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/zen/v1/models",
+      "sources": [
+        "S3:console-file-route",
+        "S5:zen-live"
+      ]
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/zen/v1/models",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/zen/v1/models/:model",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/zen/v1/models/:model",
+      "sources": [
+        "S5:zen-live"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/mcp/resource",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/provider",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:provider.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/provider/{providerID}",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:provider.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/{sessionID}/agent",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/vcs/base",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/websearch",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/websearch/provider",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/provider",
+      "sources": [
+        "S2:src:provider.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/:id/provider-section",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/zen/util/provider/anthropic",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/zen/util/provider/google",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/zen/util/provider/openai",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/zen/util/provider/openai-compatible",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/zen/util/provider/provider",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/zen/util/provider/systemone",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/:id/billing",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/:id/billing/billing-section",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/:id/billing/black-section",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/:id/billing/payment-section",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/:id/billing/redeem-section",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/:id/billing/reload-section",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/support/actions/reset-quota",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/experimental/session/stats",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/:id/usage",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/:id/usage/graph-section",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/:id/usage/usage-section",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/zen/go/v1/usage",
+      "sources": [
+        "S3:console-file-route",
+        "S5:zen-live"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/session/{sessionID}/context",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/session/{sessionID}/message",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:message.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/session/:sessionID/message",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/zen/go/v1/chat/completions",
+      "sources": [
+        "S3:console-file-route",
+        "S5:zen-live"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/zen/go/v1/messages",
+      "sources": [
+        "S3:console-file-route",
+        "S5:zen-live"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/zen/go/v1/responses",
+      "sources": [
+        "S3:console-file-route",
+        "S5:zen-live"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/zen/v1/chat/completions",
+      "sources": [
+        "S3:console-file-route",
+        "S5:zen-live"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/zen/v1/messages",
+      "sources": [
+        "S3:console-file-route",
+        "S5:zen-live"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/zen/v1/responses",
+      "sources": [
+        "S3:console-file-route",
+        "S5:zen-live"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/integration/{integrationID}/connect/oauth",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:integration.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/integration/{integrationID}/connect/oauth/{attemptID}",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/integration/{integrationID}/connect/oauth/{attemptID}",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/integration/{integrationID}/connect/oauth/{attemptID}/complete",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/auth",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/auth/*callback",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/auth/:providerID",
+      "sources": [
+        "S2:src:control.ts"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/auth/:providerID",
+      "sources": [
+        "S2:src:control.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/auth/authorize",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/auth/logout",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/auth/status",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/mcp/:name/auth",
+      "sources": [
+        "S2:src:mcp.ts"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/mcp/:name/auth",
+      "sources": [
+        "S2:src:mcp.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/mcp/:name/auth/authenticate",
+      "sources": [
+        "S2:src:mcp.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/mcp/:name/auth/callback",
+      "sources": [
+        "S2:src:mcp.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/oauth/opencode/client.json",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/*404",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/agent",
+      "sources": [
+        "S2:src:instance.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/agent",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:agent.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/agent/{agentID}",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/command",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:command.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/config",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/config/shell",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/credential/{credentialID}",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:credential.ts"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/credential/{credentialID}",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:credential.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/credential/{credentialID}/activate",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/debug/location",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/debug/location",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/enterprise",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/event",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:event.ts"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/experimental/config",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/experimental/fs/write",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/experimental/integration/wellknown",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/experimental/mcp/{server}",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/experimental/mcp/{server}",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/experimental/mcp/{server}/connect",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/experimental/mcp/{server}/disconnect",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/experimental/migration/v1",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/experimental/persistent-pty/handoff",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/experimental/persistent-pty/shutdown",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/experimental/persistent-pty/{ptyID}",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/experimental/persistent-pty/{ptyID}",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/experimental/persistent-pty/{ptyID}",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/experimental/persistent-pty/{ptyID}/connect",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/experimental/persistent-pty/{ptyID}/connect-token",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/experimental/persistent-pty/{ptyID}/snapshot",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/experimental/session/import",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/experimental/session/{sessionID}/export",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/experimental/session/{sessionID}/instructions/entries",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/experimental/session/{sessionID}/instructions/entries/{key}",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/experimental/session/{sessionID}/log",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/experimental/session/{sessionID}/skill",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/experimental/session/{sessionID}/terminal",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/experimental/session/{sessionID}/terminal",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/experimental/session/{sessionID}/terminal/read",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/experimental/session/{sessionID}/wait",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/form",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/fs/find",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:fs.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/fs/list",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:fs.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/fs/read/*",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:fs.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/health",
+      "sources": [
+        "S2:src:health.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/info",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/integration",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:integration.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/integration/attempt/:attemptID",
+      "sources": [
+        "S2:src:integration.ts"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/integration/attempt/:attemptID",
+      "sources": [
+        "S2:src:integration.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/integration/attempt/:attemptID/complete",
+      "sources": [
+        "S2:src:integration.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/integration/{integrationID}",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:integration.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/integration/{integrationID}/connect/command",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/integration/{integrationID}/connect/command/{attemptID}",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/integration/{integrationID}/connect/command/{attemptID}",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/integration/{integrationID}/connect/key",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:integration.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/location",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:location.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/location/reload",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/mcp",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/permission/request",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:permission.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/permission/saved",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:permission.ts"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/permission/saved/{id}",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:permission.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/plugin",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/plugin/check",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/plugin/update",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/project",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/project/{projectID}",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/pty",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:pty.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/pty",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:pty.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/pty/{ptyID}",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:pty.ts"
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/pty/{ptyID}",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:pty.ts"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/pty/{ptyID}",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:pty.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/pty/{ptyID}/connect",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:pty.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/pty/{ptyID}/connect-token",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:pty.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/question/request",
+      "sources": [
+        "S2:src:question.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/reference",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:reference.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/rpc/{rpcID}/{method}",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/session",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/session",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/session/:sessionID/event",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/session/:sessionID/history",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/session/:sessionID/question",
+      "sources": [
+        "S2:src:question.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/:sessionID/question/:requestID/reject",
+      "sources": [
+        "S2:src:question.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/:sessionID/question/:requestID/reply",
+      "sources": [
+        "S2:src:question.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/:sessionID/revert/clear",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/:sessionID/wait",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/session/active",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/session/{sessionID}",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/session/{sessionID}",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/session/{sessionID}",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/{sessionID}/background",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/{sessionID}/command",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/{sessionID}/compact",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/session/{sessionID}/diff",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/session/{sessionID}/environment",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/{sessionID}/fork",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/session/{sessionID}/form",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/{sessionID}/form",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/session/{sessionID}/form/{formID}",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/session/{sessionID}/form/{formID}",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/{sessionID}/form/{formID}/reply",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/{sessionID}/generate",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/session/{sessionID}/inbox",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/session/{sessionID}/inbox/{inboxID}",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/session/{sessionID}/inbox/{inboxID}",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/{sessionID}/interrupt",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/session/{sessionID}/message/{messageID}",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/{sessionID}/move",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/{sessionID}/permission",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:permission.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/session/{sessionID}/permission",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:permission.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/session/{sessionID}/permission/{requestID}",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:permission.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/{sessionID}/permission/{requestID}/reply",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:permission.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/{sessionID}/prompt",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/session/{sessionID}/revert",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/{sessionID}/revert/commit",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/{sessionID}/revert/stage",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/{sessionID}/shell",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/{sessionID}/synthetic",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/{sessionID}/view",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/shell",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/shell",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/shell/{id}",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/shell/{id}",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/shell/{id}/output",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/skill",
+      "sources": [
+        "S1:live-openapi",
+        "S2:src:skill.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/support/actions/block-workspaces",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/support/actions/create-referral",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/support/actions/delete-account",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/support/actions/unblock-workspace",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/support/actions/unblock-workspaces",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/vcs",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/vcs/branch",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/vcs/diff",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/vcs/status",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/worktree",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/worktree",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/worktree",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/worktree/refresh",
+      "sources": [
+        "S1:live-openapi"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/bench",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/bench/:id",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/bench/submission",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/black",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/black/common",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/black/workspace",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/brand",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/changelog",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/changelog.json",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/changelog.json",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/command",
+      "sources": [
+        "S2:src:instance.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/config",
+      "sources": [
+        "S2:src:config.ts"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/config",
+      "sources": [
+        "S2:src:config.ts"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/data",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/data/*path",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/desktop-feedback",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/discord",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/docs",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/docs/*path",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/download",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/download/:channel/:platform",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/download/types",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/enterprise",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/event",
+      "sources": [
+        "S2:src:event.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/experimental/capabilities",
+      "sources": [
+        "S2:src:experimental.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/experimental/console",
+      "sources": [
+        "S2:src:experimental.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/experimental/console/orgs",
+      "sources": [
+        "S2:src:experimental.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/experimental/console/switch",
+      "sources": [
+        "S2:src:experimental.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/experimental/control-plane/move-session",
+      "sources": [
+        "S2:src:control-plane.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/experimental/project/:projectID/copy",
+      "sources": [
+        "S2:src:project-copy.ts"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/experimental/project/:projectID/copy",
+      "sources": [
+        "S2:src:project-copy.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/experimental/project/:projectID/copy/generate-name",
+      "sources": [
+        "S2:src:project-copy.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/experimental/project/:projectID/copy/refresh",
+      "sources": [
+        "S2:src:project-copy.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/experimental/resource",
+      "sources": [
+        "S2:src:experimental.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/experimental/session",
+      "sources": [
+        "S2:src:experimental.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/experimental/session/:sessionID/background",
+      "sources": [
+        "S2:src:experimental.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/experimental/tool",
+      "sources": [
+        "S2:src:experimental.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/experimental/tool/ids",
+      "sources": [
+        "S2:src:experimental.ts"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/experimental/workspace/:id",
+      "sources": [
+        "S2:src:workspace.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/experimental/workspace/adapter",
+      "sources": [
+        "S2:src:workspace.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/experimental/workspace/status",
+      "sources": [
+        "S2:src:workspace.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/experimental/workspace/sync-list",
+      "sources": [
+        "S2:src:workspace.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/experimental/workspace/warp",
+      "sources": [
+        "S2:src:workspace.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/experimental/worktree",
+      "sources": [
+        "S2:src:experimental.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/experimental/worktree",
+      "sources": [
+        "S2:src:experimental.ts"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/experimental/worktree",
+      "sources": [
+        "S2:src:experimental.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/experimental/worktree/reset",
+      "sources": [
+        "S2:src:experimental.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/feishu",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/file",
+      "sources": [
+        "S2:src:file.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/file/content",
+      "sources": [
+        "S2:src:file.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/file/status",
+      "sources": [
+        "S2:src:file.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/find",
+      "sources": [
+        "S2:src:file.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/find/file",
+      "sources": [
+        "S2:src:file.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/find/symbol",
+      "sources": [
+        "S2:src:file.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/formatter",
+      "sources": [
+        "S2:src:instance.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/global/config",
+      "sources": [
+        "S2:src:global.ts"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/global/config",
+      "sources": [
+        "S2:src:global.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/global/dispose",
+      "sources": [
+        "S2:src:global.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/global/event",
+      "sources": [
+        "S2:src:global.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/global/health",
+      "sources": [
+        "S2:src:global.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/global/upgrade",
+      "sources": [
+        "S2:src:global.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/go",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/honeycomb/webhook",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/instance/dispose",
+      "sources": [
+        "S2:src:instance.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/legal/privacy-policy",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/legal/terms-of-service",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/log",
+      "sources": [
+        "S2:src:control.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/lsp",
+      "sources": [
+        "S2:src:instance.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/mcp",
+      "sources": [
+        "S2:src:mcp.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/mcp",
+      "sources": [
+        "S2:src:mcp.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/mcp/:name/connect",
+      "sources": [
+        "S2:src:mcp.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/mcp/:name/disconnect",
+      "sources": [
+        "S2:src:mcp.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/openapi.json",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/path",
+      "sources": [
+        "S2:src:instance.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/permission",
+      "sources": [
+        "S2:src:permission.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/permission/:requestID/reply",
+      "sources": [
+        "S2:src:permission.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/project",
+      "sources": [
+        "S2:src:project.ts"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/project/:projectID",
+      "sources": [
+        "S2:src:project.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/project/:projectID/directories",
+      "sources": [
+        "S2:src:project.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/project/current",
+      "sources": [
+        "S2:src:project.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/project/git/init",
+      "sources": [
+        "S2:src:project.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/pty/:ptyID",
+      "sources": [
+        "S2:src:pty.ts"
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/pty/:ptyID",
+      "sources": [
+        "S2:src:pty.ts"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/pty/:ptyID",
+      "sources": [
+        "S2:src:pty.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/pty/:ptyID/connect",
+      "sources": [
+        "S2:src:pty.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/pty/:ptyID/connect-token",
+      "sources": [
+        "S2:src:pty.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/pty/shells",
+      "sources": [
+        "S2:src:pty.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/question",
+      "sources": [
+        "S2:src:question.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/question/:requestID/reject",
+      "sources": [
+        "S2:src:question.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/question/:requestID/reply",
+      "sources": [
+        "S2:src:question.ts"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/s/:id",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/session/:sessionID",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/session/:sessionID",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/session/:sessionID",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/session/:sessionID/abort",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/session/:sessionID/children",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/session/:sessionID/command",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/session/:sessionID/diff",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/session/:sessionID/fork",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/session/:sessionID/init",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/session/:sessionID/message",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/session/:sessionID/message/:messageID",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/session/:sessionID/message/:messageID",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/session/:sessionID/message/:messageID/part/:partID",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/session/:sessionID/message/:messageID/part/:partID",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/session/:sessionID/permissions/:permissionID",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/session/:sessionID/prompt_async",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/session/:sessionID/revert",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/session/:sessionID/share",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/session/:sessionID/share",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/session/:sessionID/shell",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/session/:sessionID/summarize",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/session/:sessionID/todo",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/session/:sessionID/unrevert",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/session/status",
+      "sources": [
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/skill",
+      "sources": [
+        "S2:src:instance.ts"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/stats",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/stats/*path",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/stripe/webhook",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/sync/history",
+      "sources": [
+        "S2:src:sync.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/sync/replay",
+      "sources": [
+        "S2:src:sync.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/sync/start",
+      "sources": [
+        "S2:src:sync.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/sync/steal",
+      "sources": [
+        "S2:src:sync.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/t/*path",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/temp",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/tui/append-prompt",
+      "sources": [
+        "S2:src:tui.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/tui/clear-prompt",
+      "sources": [
+        "S2:src:tui.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/tui/control/next",
+      "sources": [
+        "S2:src:tui.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/tui/control/response",
+      "sources": [
+        "S2:src:tui.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/tui/execute-command",
+      "sources": [
+        "S2:src:tui.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/tui/open-help",
+      "sources": [
+        "S2:src:tui.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/tui/open-sessions",
+      "sources": [
+        "S2:src:tui.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/tui/open-themes",
+      "sources": [
+        "S2:src:tui.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/tui/publish",
+      "sources": [
+        "S2:src:tui.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/tui/select-session",
+      "sources": [
+        "S2:src:tui.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/tui/show-toast",
+      "sources": [
+        "S2:src:tui.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/tui/submit-prompt",
+      "sources": [
+        "S2:src:tui.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/user-menu",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/vcs",
+      "sources": [
+        "S2:src:instance.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/vcs/apply",
+      "sources": [
+        "S2:src:instance.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/vcs/diff",
+      "sources": [
+        "S2:src:instance.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/vcs/diff/raw",
+      "sources": [
+        "S2:src:instance.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/vcs/status",
+      "sources": [
+        "S2:src:instance.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace-picker",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/:id",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/:id/go",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/:id/go/lite-section",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/:id/keys",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/:id/keys/key-section",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/:id/members",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/:id/members/member-section",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/:id/members/role-dropdown",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/:id/new-user-section",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/:id/settings",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/:id/settings/settings-section",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/workspace/common",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/zen",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/zen/go/v1/systemone",
+      "sources": [
+        "S3:console-file-route",
+        "S5:zen-live"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/zen/util/error",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/zen/util/handler",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/zen/util/ipRateLimiter",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/zen/util/keyRateLimiter",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/zen/util/logger",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/zen/util/modelTpmLimiter",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/zen/util/modelTpsLimiter",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/zen/util/modelsHandler",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/zen/util/providerBudgetTracker",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/zen/util/redis",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/zen/util/requestBody",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/zen/util/stickyProviderTracker",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/zen/util/trainingConsent",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/zen/util/trialLimiter",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/zen/util/usageBatcher",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/zen/util/variant",
+      "sources": [
+        "S3:console-file-route"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/zen/v1/systemone",
+      "sources": [
+        "S3:console-file-route",
+        "S5:zen-live"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "<expr:PtyPaths.create>",
+      "sources": [
+        "S2:src:pty.ts",
+        "S2:src:session.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "<expr:PtyPaths.list>",
+      "sources": [
+        "S2:src:pty.ts",
+        "S2:src:session.ts",
+        "S2:src:workspace.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "<expr:WorkspacePaths.list>",
+      "sources": [
+        "S2:src:workspace.ts"
+      ]
+    }
+  ]
+}
